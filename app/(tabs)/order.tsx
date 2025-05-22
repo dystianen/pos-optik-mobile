@@ -11,20 +11,20 @@ import {
 
 const initialItems = [
   { id: "1", name: "Nasi Goreng Spesial", price: 25000, quantity: 0 },
-  { id: "2", name: "Martabak Keju susu", price: 30000, quantity: 1 },
-  { id: "3", name: "Es Cendol", price: 16000, quantity: 1 },
-  { id: "4", name: "Bakso Sniper", price: 26000, quantity: 1 },
-  { id: "5", name: "Tahu Pidis", price: 40000, quantity: 1 },
-  { id: "6", name: "Es Matahari", price: 26000, quantity: 1 },
-  { id: "7", name: "Seblak", price: 26000, quantity: 1 },
-  { id: "8", name: "Roti Bakar coklat wijen", price: 36000, quantity: 1 },
-  { id: "9", name: "Pisang goreng keju susu", price: 26000, quantity: 1 },
-  { id: "10", name: "Pisang goreng keju susu", price: 26000, quantity: 1 },
-  { id: "11", name: "Pisang goreng keju susu", price: 26000, quantity: 1 },
-  { id: "12", name: "Pisang goreng keju susu", price: 26000, quantity: 1 },
-  { id: "13", name: "Pisang goreng keju susu", price: 26000, quantity: 1 },
-  { id: "14", name: "Pisang goreng keju susu", price: 26000, quantity: 1 },
-  { id: "15", name: "Pisang goreng keju susu", price: 26000, quantity: 1 },
+  { id: "2", name: "Martabak Keju susu", price: 30000, quantity: 0 },
+  { id: "3", name: "Es Cendol", price: 16000, quantity: 0 },
+  { id: "4", name: "Bakso Sniper", price: 26000, quantity: 0 },
+  { id: "5", name: "Tahu Pidis", price: 40000, quantity: 0 },
+  { id: "6", name: "Es Matahari", price: 26000, quantity: 0 },
+  { id: "7", name: "Seblak", price: 26000, quantity: 0 },
+  { id: "8", name: "Roti Bakar coklat wijen", price: 36000, quantity: 0 },
+  { id: "9", name: "Pisang goreng keju susu", price: 26000, quantity: 0 },
+  { id: "10", name: "Pisang goreng keju susu", price: 26000, quantity: 0 },
+  { id: "11", name: "Pisang goreng keju susu", price: 26000, quantity: 0 },
+  { id: "12", name: "Pisang goreng keju susu", price: 26000, quantity: 0 },
+  { id: "13", name: "Pisang goreng keju susu", price: 26000, quantity: 0 },
+  { id: "14", name: "Pisang goreng keju susu", price: 26000, quantity: 0 },
+  { id: "15", name: "Pisang goreng keju susu", price: 26000, quantity: 0 },
 ];
 
 export default function Order() {
@@ -81,7 +81,7 @@ export default function Order() {
     <Layout withSearch>
       <Text style={styles.menuTitle}>Menu Warung Kecil</Text>
       <ScrollView
-        style={{ marginBottom: 80 }}
+        style={{ marginBottom: 55 }}
         showsVerticalScrollIndicator={false}
       >
         {menuItems.map((item) => renderItem({ item }))}
@@ -142,8 +142,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 16,
-    borderTopWidth: 1,
-    borderColor: "#ddd",
   },
   checkoutButton: {
     backgroundColor: "#000",

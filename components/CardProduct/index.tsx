@@ -10,7 +10,7 @@ type TProps = {
 const CardProduct = ({ name, img }: TProps) => {
   const handlePress = () => {
     router.push({
-      pathname: "/ProductDetail",
+      pathname: "/product-detail",
       params: { name, img },
     });
   };
