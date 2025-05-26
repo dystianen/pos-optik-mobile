@@ -5,6 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 
 // Jangan sembunyikan SplashScreen otomatis
@@ -44,12 +45,14 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="menu-detail" options={{ title: "Menu Detail" }} />
-        <Stack.Screen name="checkout" options={{ title: "Checkout" }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="menu-detail" options={{ title: "Menu Detail" }} />
+          <Stack.Screen name="checkout" options={{ title: "Checkout" }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </GestureHandlerRootView>
       <StatusBar style="auto" />
     </ThemeProvider>
   );

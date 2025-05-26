@@ -1,7 +1,11 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import { Ionicons } from "@expo/vector-icons";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import React, { useCallback, useRef } from "react";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
+import React, { useCallback, useEffect, useRef } from "react";
 import {
   Dimensions,
   Image,
@@ -11,7 +15,7 @@ import {
   View,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
+import Carousel from "react-native-reanimated-carousel";
 
 const imgThumbnail = [
   "https://plus.unsplash.com/premium_photo-1694141252774-c937d97641da",
@@ -26,8 +30,12 @@ const imgThumbnail = [
 const width = Dimensions.get("window").width;
 
 export default function ProductDetail() {
-  const ref = React.useRef<ICarouselInstance>(null);
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  useEffect(() => {
+    // Present the modal immediately without button
+    bottomSheetModalRef.current?.present();
+  }, []);
 
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index);
@@ -35,10 +43,9 @@ export default function ProductDetail() {
 
   return (
     <MainLayout style={styles.container}>
-      <View style={{ flex: 1 }}>
-        {/* Product Image */}
+      {/* Carousel Container */}
+      <View style={styles.carouselWrapper}>
         <Carousel
-          ref={ref}
           width={width - 32}
           height={600}
           autoPlayInterval={2000}
@@ -55,14 +62,15 @@ export default function ProductDetail() {
             </View>
           )}
         />
+      </View>
 
-        {/* BottomSheet di depan image */}
-        <GestureHandlerRootView style={StyleSheet.absoluteFill}>
-          <BottomSheet
-            ref={bottomSheetRef}
-            snapPoints={["30%", "30%"]}
+      <GestureHandlerRootView style={styles.sheetContainer}>
+        <BottomSheetModalProvider>
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
             onChange={handleSheetChanges}
-            index={1}
+            snapPoints={["40%", "60%"]}
+            enableDismissOnClose={false}
           >
             <BottomSheetView style={styles.sheetContent}>
               {/* Title & Price */}
@@ -88,40 +96,45 @@ export default function ProductDetail() {
                 </Text>
               </TouchableOpacity>
             </BottomSheetView>
-          </BottomSheet>
-        </GestureHandlerRootView>
-      </View>
+          </BottomSheetModal>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
     </MainLayout>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  scrollContainer: {
     paddingTop: 10,
+  },
+  carouselWrapper: {
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  sheetContainer: {
+    flex: 1,
     paddingHorizontal: 16,
-    paddingBottom: 200, // memberikan ruang agar konten tidak tertutup bottom sheet
+    justifyContent: "flex-end", // penting agar sheet di bagian bawah
+    backgroundColor: "transparent",
   },
   sheetContent: {
     flex: 1,
-    padding: 24,
     alignItems: "center",
   },
   imageBox: {
+    flex: 1,
     backgroundColor: "#eee",
     borderRadius: 16,
     justifyContent: "center",
     alignItems: "center",
-    height: 600,
-    overflow: "hidden",
   },
   titlePrice: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
+    paddingHorizontal: 16,
+    marginTop: 8,
   },
   productTitle: {
     fontWeight: "bold",
@@ -135,7 +148,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     fontSize: 14,
     color: "#555",
-    textAlign: "justify",
+    paddingHorizontal: 16,
+    textAlign: "center",
   },
   addButton: {
     backgroundColor: "#f33",
@@ -144,8 +158,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 24,
     paddingHorizontal: 16,
-    alignSelf: "flex-start",
-    marginTop: 10,
+    marginTop: 16,
     shadowColor: "#f33",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
