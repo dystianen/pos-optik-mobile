@@ -1,8 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { ReactNode } from "react";
-import { Platform, StatusBar, StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 
-const Layout = ({
+const MainLayout = ({
   children,
   withSearch = false,
 }: {
@@ -18,6 +18,7 @@ const Layout = ({
             style={styles.searchBox}
           />
           <View style={styles.icons}>
+            <Ionicons name="cart-outline" size={20} />
             <Ionicons name="chatbubble-ellipses-outline" size={20} />
             <Ionicons name="notifications-outline" size={20} />
           </View>
@@ -33,8 +34,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 40,
-    padding: 16,
+    paddingTop: 10,
+    paddingHorizontal: 16,
   },
   header: {
     flexDirection: "row",
@@ -43,8 +44,9 @@ const styles = StyleSheet.create({
   },
   searchBox: {
     flex: 1,
-    backgroundColor: "#f0f0f0",
-    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 20,
     paddingHorizontal: 16,
     marginRight: 10,
   },
@@ -54,4 +56,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Layout;
+export default MainLayout;

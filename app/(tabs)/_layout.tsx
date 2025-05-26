@@ -1,20 +1,16 @@
 import { HapticTab } from "@/components/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
 import { Tabs } from "expo-router";
 import React from "react";
 import { Platform } from "react-native";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: Colors[colorScheme ?? "dark"].tint,
+        tabBarActiveTintColor: "#f33",
         tabBarButton: (props) => <HapticTab {...props} />,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
@@ -33,7 +29,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
@@ -42,13 +38,22 @@ export default function TabLayout() {
         }}
       />
 
-      {/* Custom tab in center */}
       <Tabs.Screen
         name="order"
         options={{
-          title: "",
+          title: "Order",
           tabBarIcon: ({ color }) => (
             <IconSymbol size={32} name="list.bullet" color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={32} name="person" color={color} />
           ),
         }}
       />

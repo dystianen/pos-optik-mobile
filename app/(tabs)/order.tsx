@@ -1,6 +1,7 @@
-import Layout from "@/components/layouts/layout";
+import MainLayout from "@/components/layouts/MainLayout";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import { router } from "expo-router";
+import React, { useCallback, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -77,9 +78,15 @@ export default function Order() {
     </View>
   );
 
+  const handleCheckout = useCallback(() => {
+    router.push({
+      pathname: "/checkout",
+    });
+  }, []);
+
   return (
-    <Layout withSearch>
-      <Text style={styles.menuTitle}>Menu Warung Kecil</Text>
+    <MainLayout withSearch>
+      <Text style={styles.menuTitle}>Menu Waroeng Kecil</Text>
       <ScrollView
         style={{ marginBottom: 55 }}
         showsVerticalScrollIndicator={false}
@@ -92,11 +99,14 @@ export default function Order() {
         <Text style={{ fontWeight: "600", fontSize: 16 }}>
           Rp{total.toLocaleString("id-ID")}
         </Text>
-        <TouchableOpacity style={styles.checkoutButton}>
+        <TouchableOpacity
+          style={styles.checkoutButton}
+          onPress={handleCheckout}
+        >
           <Text style={{ fontWeight: "600", color: "white" }}>Checkout</Text>
         </TouchableOpacity>
       </View>
-    </Layout>
+    </MainLayout>
   );
 }
 
@@ -106,31 +116,42 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 10,
     marginBottom: 16,
+    color: "#333",
   },
   itemContainer: {
-    backgroundColor: "#f5f5f5",
-    padding: 12,
-    borderRadius: 12,
-    marginBottom: 10,
+    borderWidth: 0.5,
+    borderColor: "#ddd", // warna garis luar
+    padding: 14,
+    borderRadius: 15,
+    marginBottom: 12,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    backgroundColor: "transparent", // pastikan background transparan
   },
-  itemTitle: { fontWeight: "600" },
-  itemSub: { fontSize: 13, color: "#777" },
+  itemTitle: {
+    fontWeight: "700",
+    fontSize: 14,
+    color: "#333",
+  },
+  itemSub: {
+    fontSize: 13,
+    color: "#888",
+    marginTop: 4,
+  },
   addButton: {
-    backgroundColor: "#e0e0e0",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
+    backgroundColor: "#fbd5d5",
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 10,
   },
   qtyContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#e0e0e0",
-    borderRadius: 8,
+    backgroundColor: "#fbd5d5",
+    borderRadius: 10,
     paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingVertical: 6,
   },
   summaryBar: {
     position: "absolute",
@@ -142,11 +163,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 16,
+    borderTopWidth: 1,
+    borderTopColor: "#eee",
   },
   checkoutButton: {
-    backgroundColor: "#000",
+    backgroundColor: "#f33",
     paddingVertical: 10,
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
     borderRadius: 12,
+    shadowColor: "#f33",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
   },
 });
