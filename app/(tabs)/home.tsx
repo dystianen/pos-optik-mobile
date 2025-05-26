@@ -1,7 +1,15 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import CardProduct from "@/components/ui/CardProduct";
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const foodDummy = [
   {
@@ -60,6 +68,44 @@ const bestMenu = [
   },
 ];
 
+const reviews = [
+  {
+    id: 1,
+    name: "Andy Senjaya",
+    comment: "Enak Josss.",
+    rating: 4,
+    img: "https://randomuser.me/api/portraits/men/43.jpg",
+  },
+  {
+    id: 2,
+    name: "Fickry",
+    comment: "Mantab, porsinya kurang banyak",
+    rating: 4,
+    img: "https://randomuser.me/api/portraits/women/43.jpg",
+  },
+  {
+    id: 3,
+    name: "Roby",
+    comment: "Mantab Pokoknya, agak ke asinan.",
+    rating: 3,
+    img: "https://randomuser.me/api/portraits/men/45.jpg",
+  },
+  {
+    id: 4,
+    name: "Citra",
+    comment: "Mantab Pokoknya, agak ke asinan.",
+    rating: 3,
+    img: "https://randomuser.me/api/portraits/women/46.jpg",
+  },
+  {
+    id: 5,
+    name: "Zulpan",
+    comment: "Mantab Pokoknya, agak ke asinan.",
+    rating: 3,
+    img: "https://randomuser.me/api/portraits/men/47.jpg",
+  },
+];
+
 const renderMenu = (items: { name: string; img: string }[]) => (
   <ScrollView
     horizontal
@@ -74,7 +120,7 @@ const renderMenu = (items: { name: string; img: string }[]) => (
 
 export default function HomeScreen() {
   return (
-    <MainLayout withSearch>
+    <MainLayout style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.greeting}>
           <Text style={styles.greetingText}>Welcome, Dystian 👋</Text>
@@ -99,12 +145,54 @@ export default function HomeScreen() {
 
         <Text style={styles.sectionTitle}>Menu Terenak</Text>
         <View style={styles.menuRow}>{renderMenu(bestMenu)}</View>
+
+        {/* Reviews */}
+        <Text style={styles.sectionTitle}>Ulasan Menu Kami</Text>
+        <View style={styles.reviewContainer}>
+          {reviews.map((review) => (
+            <View key={review.id} style={styles.reviewCard}>
+              <View style={styles.avatar}>
+                <Image
+                  source={{
+                    uri: review.img,
+                  }}
+                  style={{ width: "100%", height: "100%", borderRadius: 12 }}
+                  resizeMode="cover"
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <View style={styles.reviewHeader}>
+                  <Text style={styles.reviewName}>{review.name}</Text>
+                  <View style={styles.starContainer}>
+                    {Array.from({ length: 5 }).map((_, idx) => (
+                      <Ionicons
+                        key={idx}
+                        name={idx < review.rating ? "star" : "star-outline"}
+                        size={14}
+                        color="#facc15"
+                      />
+                    ))}
+                  </View>
+                </View>
+                <Text style={styles.reviewComment}>{review.comment}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+
+        {/* Load More */}
+        <TouchableOpacity style={styles.loadMore}>
+          <Text style={{ color: "#aaa" }}>Load More...</Text>
+        </TouchableOpacity>
       </ScrollView>
     </MainLayout>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingTop: 50,
+  },
   greeting: {
     marginTop: 8,
   },
@@ -178,5 +266,48 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
     borderRadius: 8,
     marginBottom: 4,
+  },
+  reviewContainer: {
+    marginTop: 10,
+  },
+  reviewTitle: {
+    fontWeight: "bold",
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  reviewCard: {
+    flexDirection: "row",
+    padding: 12,
+    borderRadius: 12,
+    backgroundColor: "#f9f9f9",
+    marginBottom: 10,
+    alignItems: "flex-start",
+  },
+  avatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "#ccc",
+    marginRight: 10,
+  },
+  reviewHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  reviewName: {
+    fontWeight: "600",
+    marginBottom: 2,
+  },
+  reviewComment: {
+    fontSize: 13,
+    color: "#555",
+  },
+  starContainer: {
+    flexDirection: "row",
+    gap: 2,
+  },
+  loadMore: {
+    alignItems: "center",
+    marginVertical: 16,
   },
 });

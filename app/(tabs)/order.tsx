@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -54,7 +55,8 @@ export default function Order() {
       <View>
         <Text style={styles.itemTitle}>{item.name}</Text>
         <Text style={styles.itemSub}>
-          {item.quantity}x Rp{item.price.toLocaleString("id-ID")}
+          {item.quantity > 0 ? `${item.quantity}x ` : ""}
+          Rp{item.price.toLocaleString("id-ID")}
         </Text>
       </View>
       {item.quantity === 0 ? (
@@ -85,7 +87,16 @@ export default function Order() {
   }, []);
 
   return (
-    <MainLayout withSearch>
+    <MainLayout style={styles.container}>
+      <View style={styles.header}>
+        <TextInput placeholder="Search Product ..." style={styles.searchBox} />
+        <View style={styles.icons}>
+          <Ionicons name="cart-outline" size={20} />
+          <Ionicons name="chatbubble-ellipses-outline" size={20} />
+          <Ionicons name="notifications-outline" size={20} />
+        </View>
+      </View>
+
       <Text style={styles.menuTitle}>Menu Waroeng Kecil</Text>
       <ScrollView
         style={{ marginBottom: 55 }}
@@ -111,6 +122,27 @@ export default function Order() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingTop: 50,
+    paddingBottom: 16,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  searchBox: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    marginRight: 10,
+  },
+  icons: {
+    flexDirection: "row",
+    gap: 12,
+  },
   menuTitle: {
     fontSize: 16,
     fontWeight: "bold",

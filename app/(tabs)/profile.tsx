@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/Feather";
 
 export default function Profile() {
   return (
-    <MainLayout>
+    <MainLayout style={styles.container}>
       {/* Profile Info */}
       <View style={styles.profileContainer}>
         <View>
@@ -58,9 +58,7 @@ export default function Profile() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 30,
-    paddingHorizontal: 20,
-    backgroundColor: "#fff",
+    paddingTop: 50,
   },
   header: {
     flexDirection: "row",
