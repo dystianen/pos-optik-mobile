@@ -1,11 +1,7 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import { Ionicons } from "@expo/vector-icons";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetView,
-} from "@gorhom/bottom-sheet";
-import React, { useCallback, useEffect, useRef } from "react";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import React, { useCallback, useRef } from "react";
 import {
   Dimensions,
   Image,
@@ -14,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Carousel from "react-native-reanimated-carousel";
 
@@ -30,96 +27,75 @@ const imgThumbnail = [
 const width = Dimensions.get("window").width;
 
 export default function ProductDetail() {
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  useEffect(() => {
-    // Present the modal immediately without button
-    bottomSheetModalRef.current?.present();
-  }, []);
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index);
   }, []);
 
   return (
-    <MainLayout style={styles.container}>
-      {/* Carousel Container */}
-      <View style={styles.carouselWrapper}>
-        <Carousel
-          width={width - 32}
-          height={600}
-          autoPlayInterval={2000}
-          loop
-          snapEnabled
-          data={imgThumbnail}
-          renderItem={({ item }) => (
-            <View style={styles.imageBox}>
-              <Image
-                source={{ uri: item }}
-                style={{ width: "100%", height: "100%", borderRadius: 12 }}
-                resizeMode="cover"
-              />
-            </View>
-          )}
-        />
-      </View>
-
-      <GestureHandlerRootView style={styles.sheetContainer}>
-        <BottomSheetModalProvider>
-          <BottomSheetModal
-            ref={bottomSheetModalRef}
-            onChange={handleSheetChanges}
-            snapPoints={["40%", "60%"]}
-            enableDismissOnClose={false}
-          >
-            <BottomSheetView style={styles.sheetContent}>
-              {/* Title & Price */}
-              <View style={styles.titlePrice}>
-                <Text style={styles.productTitle}>Nasi Goreng</Text>
-                <Text style={styles.productPrice}>Rp25.000</Text>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <MainLayout style={styles.container}>
+        <View style={styles.carouselWrapper}>
+          <Carousel
+            width={width - 32}
+            height={550}
+            autoPlayInterval={2000}
+            loop
+            snapEnabled
+            data={imgThumbnail}
+            renderItem={({ item }) => (
+              <View style={styles.imageBox}>
+                <Image
+                  source={{ uri: item, cache: "only-if-cached" }}
+                  style={{ width: "100%", height: "100%", borderRadius: 12 }}
+                  resizeMode="cover"
+                />
               </View>
+            )}
+          />
+        </View>
+      </MainLayout>
 
-              {/* Description */}
-              <Text style={styles.description}>
-                Nasi yang digoreng dengan bumbu bawang putih, kecap manis,
-                telur, potongan ayam, dan sayuran (wortel dan kol). Disajikan
-                dengan kerupuk dan acar.
-              </Text>
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={[250, 400]}
+        onChange={handleSheetChanges}
+        index={0}
+      >
+        <BottomSheetView style={styles.sheetContent}>
+          <View style={styles.titlePrice}>
+            <Text style={styles.productTitle}>Nasi Goreng</Text>
+            <Text style={styles.productPrice}>Rp25.000</Text>
+          </View>
 
-              {/* Add Button */}
-              <TouchableOpacity style={styles.addButton}>
-                <Ionicons name="cart-outline" size={18} color={"#fff"} />
-                <Text
-                  style={{ marginLeft: 8, fontWeight: "600", color: "#fff" }}
-                >
-                  Tambah Menu Ini
-                </Text>
-              </TouchableOpacity>
-            </BottomSheetView>
-          </BottomSheetModal>
-        </BottomSheetModalProvider>
-      </GestureHandlerRootView>
-    </MainLayout>
+          <Text style={styles.description}>
+            Nasi yang digoreng dengan bumbu bawang putih, kecap manis, telur,
+            potongan ayam, dan sayuran (wortel dan kol). Disajikan dengan
+            kerupuk dan acar.
+          </Text>
+
+          <TouchableOpacity style={styles.addButton}>
+            <Ionicons name="cart-outline" size={18} color={"#fff"} />
+            <Text style={{ marginLeft: 8, fontWeight: "600", color: "#fff" }}>
+              Tambah Menu Ini
+            </Text>
+          </TouchableOpacity>
+        </BottomSheetView>
+      </BottomSheet>
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 10,
+    flex: 1,
+    position: "relative", // penting
   },
   carouselWrapper: {
     alignItems: "center",
     marginBottom: 16,
-  },
-  sheetContainer: {
-    flex: 1,
-    paddingHorizontal: 16,
-    justifyContent: "flex-end", // penting agar sheet di bagian bawah
-    backgroundColor: "transparent",
-  },
-  sheetContent: {
-    flex: 1,
-    alignItems: "center",
+    paddingTop: 16,
   },
   imageBox: {
     flex: 1,
@@ -128,12 +104,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  sheetContent: {
+    flex: 1,
+    padding: 16,
+  },
   titlePrice: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    paddingHorizontal: 16,
     marginTop: 8,
   },
   productTitle: {
@@ -148,8 +127,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     fontSize: 14,
     color: "#555",
-    paddingHorizontal: 16,
-    textAlign: "center",
   },
   addButton: {
     backgroundColor: "#f33",
@@ -164,5 +141,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 4,
+    alignSelf: "flex-start",
   },
 });

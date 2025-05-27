@@ -25,7 +25,10 @@ const CardProduct = ({ name, img }: TProps) => {
     <TouchableWithoutFeedback onPress={handlePress}>
       <View style={styles.menuItem}>
         <View style={styles.imageWrapper}>
-          <Image source={{ uri: img }} style={styles.image} />
+          <Image
+            source={{ uri: img, cache: "only-if-cached" }}
+            style={styles.image}
+          />
         </View>
         <Text style={styles.menuText}>{name}</Text>
       </View>

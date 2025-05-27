@@ -58,6 +58,7 @@ export default function Profile() {
 
 const styles = StyleSheet.create({
   container: {
+    paddingHorizontal: 16,
     paddingTop: 50,
   },
   header: {

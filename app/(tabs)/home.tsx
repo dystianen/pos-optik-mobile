@@ -191,7 +191,8 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 50,
+    paddingHorizontal: 16,
+    paddingTop: 30,
   },
   greeting: {
     marginTop: 8,

@@ -15,47 +15,45 @@ export default function Checkout() {
   }, []);
 
   return (
-    <MainLayout>
-      <View style={styles.container}>
-        <Text style={styles.label}>Table</Text>
-        <TextInput
-          placeholder="Please input table number"
-          style={styles.input}
-          keyboardType="number-pad"
-        />
+    <MainLayout style={styles.container}>
+      <Text style={styles.label}>Table</Text>
+      <TextInput
+        placeholder="Please input table number"
+        style={styles.input}
+        keyboardType="number-pad"
+      />
 
-        <Text style={styles.label}>Order</Text>
-        <View style={styles.summaryBox}>
-          <SummaryRow label="Nasi Goreng" value="Rp250.000" />
-          <SummaryRow label="Bakso Sniper" value="Rp10.000" />
-          <SummaryRow label="Ayam Bakar" value="Rp26.000" />
-          <SummaryRow label="Gedang Goreng" value="Rp10.000" />
-        </View>
+      <Text style={styles.label}>Order</Text>
+      <View style={styles.summaryBox}>
+        <SummaryRow label="Nasi Goreng" value="Rp250.000" />
+        <SummaryRow label="Bakso Sniper" value="Rp10.000" />
+        <SummaryRow label="Ayam Bakar" value="Rp26.000" />
+        <SummaryRow label="Gedang Goreng" value="Rp10.000" />
+      </View>
 
-        <Text style={styles.label}>Summary</Text>
-        <View style={styles.summaryBox}>
-          <SummaryRow label="Subtotal" value="Rp250.000" />
-          <SummaryRow label="Shipping" value="Rp10.000" />
-          <SummaryRow label="Tax(10%)" value="Rp26.000" />
-          <SummaryRow label="Service" value="Rp10.000" />
-        </View>
+      <Text style={styles.label}>Summary</Text>
+      <View style={styles.summaryBox}>
+        <SummaryRow label="Subtotal" value="Rp250.000" />
+        <SummaryRow label="Shipping" value="Rp10.000" />
+        <SummaryRow label="Tax(10%)" value="Rp26.000" />
+        <SummaryRow label="Service" value="Rp10.000" />
+      </View>
 
-        <View style={styles.totalRow}>
-          <Text style={styles.totalText}>Total Payment</Text>
-          <Text style={styles.totalAmount}>Rp296.000</Text>
-        </View>
+      <View style={styles.totalRow}>
+        <Text style={styles.totalText}>Total Payment</Text>
+        <Text style={styles.totalAmount}>Rp296.000</Text>
+      </View>
 
-        <View style={styles.buttonRow}>
-          <TouchableOpacity
-            style={[styles.button, styles.cancelButton]}
-            onPress={handleCancel}
-          >
-            <Text style={styles.cancelText}>Cancel</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.payButton]}>
-            <Text style={styles.payText}>Print Qris</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.buttonRow}>
+        <TouchableOpacity
+          style={[styles.button, styles.cancelButton]}
+          onPress={handleCancel}
+        >
+          <Text style={styles.cancelText}>Cancel</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, styles.payButton]}>
+          <Text style={styles.payText}>Print Qris</Text>
+        </TouchableOpacity>
       </View>
     </MainLayout>
   );
@@ -73,6 +71,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     gap: 10,
+    padding: 16,
   },
   label: {
     fontWeight: "bold",

@@ -123,8 +123,9 @@ export default function Order() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 50,
+    paddingTop: 30,
     paddingBottom: 16,
+    paddingHorizontal: 16,
   },
   header: {
     flexDirection: "row",
