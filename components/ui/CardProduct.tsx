@@ -1,5 +1,7 @@
+import { TProduct } from "@/types/product";
+import { embedImage } from "@/utils/embedImage";
 import { router } from "expo-router";
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Image,
   StyleSheet,
@@ -8,50 +10,80 @@ import {
   View,
 } from "react-native";
 
-type TProps = {
-  name: string;
-  img: string;
-};
+interface CardProductProps {
+  item: TProduct;
+}
 
-const CardProduct = ({ name, img }: TProps) => {
-  const handlePress = () => {
+const CardProduct: React.FC<CardProductProps> = ({ item }) => {
+  const handlePress = useCallback(() => {
     router.push({
-      pathname: "/menu-detail",
-      params: { name, img },
+      pathname: "/product-detail",
+      params: {
+        id: item.product_id,
+      },
     });
-  };
+  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
-      <View style={styles.menuItem}>
-        <View style={styles.imageWrapper}>
-          <Image
-            source={{ uri: img, cache: "only-if-cached" }}
-            style={styles.image}
-          />
+      <View style={styles.card}>
+        <Image
+          source={{
+            uri: embedImage(item.product_image_url),
+          }}
+          style={styles.image}
+        />
+
+        <View style={styles.textContainer}>
+          <Text style={styles.brand}>{item.product_brand}</Text>
+          <Text style={styles.name}>{item.product_name}</Text>
+          <View style={styles.column}>
+            <Text style={styles.code}>{item.model}</Text>
+            <Text style={styles.price}>{item.product_price}</Text>
+          </View>
         </View>
-        <Text style={styles.menuText}>{name}</Text>
       </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-  menuItem: {
-    width: 120,
-    marginRight: 12,
-  },
-  imageWrapper: {
-    height: 80,
-    borderRadius: 10,
-    overflow: "hidden",
-    marginBottom: 6,
+  card: {
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    elevation: 1,
+    marginBottom: 16,
+    width: 150,
   },
   image: {
     width: "100%",
-    height: "100%",
+    height: 100,
+    borderRadius: 10,
   },
-  menuText: {
+  textContainer: {
+    padding: 10,
+  },
+  brand: {
+    color: "#377DFF",
+    fontWeight: "600",
+    fontSize: 12,
+    marginBottom: 2,
+  },
+  name: {
+    fontSize: 14,
+    fontWeight: "600",
+    marginBottom: 8,
+  },
+  column: {
+    flexDirection: "column",
+    gap: 2,
+  },
+  code: {
+    color: "#888",
+    fontSize: 12,
+  },
+  price: {
+    fontWeight: "600",
     fontSize: 12,
   },
 });

@@ -1,9 +1,41 @@
 import MainLayout from "@/components/layouts/MainLayout";
-import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { router } from "expo-router";
+import React, { useCallback } from "react";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
 import Icon from "react-native-vector-icons/Feather";
 
 export default function Profile() {
+  const handleLogout = useCallback(() => {
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to logout?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Logout",
+          style: "destructive",
+          onPress: () => {
+            router.push({
+              pathname: "/login",
+            });
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  }, []);
+
   return (
     <MainLayout style={styles.container}>
       {/* Profile Info */}
@@ -45,7 +77,10 @@ export default function Profile() {
         ))}
 
         {/* Logout */}
-        <TouchableOpacity style={[styles.menuItem, styles.logout]}>
+        <TouchableOpacity
+          style={[styles.menuItem, styles.logout]}
+          onPress={handleLogout}
+        >
           <View style={styles.menuLeft}>
             <Icon name="log-out" size={20} color="#f00" />
             <Text style={[styles.menuText, { color: "#f00" }]}>Log out</Text>

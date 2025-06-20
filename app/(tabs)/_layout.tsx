@@ -1,6 +1,7 @@
 import { HapticTab } from "@/components/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
+import { Colors } from "@/constants/Colors";
 import { Tabs } from "expo-router";
 import React from "react";
 import { Platform } from "react-native";
@@ -10,7 +11,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#f33",
+        tabBarActiveTintColor: Colors.primary,
         tabBarButton: (props) => <HapticTab {...props} />,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
@@ -39,9 +40,9 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="order"
+        name="product"
         options={{
-          title: "Order",
+          title: "Product",
           tabBarIcon: ({ color }) => (
             <IconSymbol size={32} name="list.bullet" color={color} />
           ),

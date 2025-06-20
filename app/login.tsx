@@ -1,4 +1,5 @@
 import AuthLayout from "@/components/layouts/AuthLayout";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -7,6 +8,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  View,
 } from "react-native";
 
 const Login = () => {
@@ -21,14 +23,13 @@ const Login = () => {
     }
 
     setLoading(true);
-
     try {
-      // Simulasi proses login
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Contoh sukses
       Alert.alert("Login Berhasil", `Selamat datang, ${email}`);
-      // TODO: Redirect ke halaman utama / simpan token
+      router.push({
+        pathname: "/(tabs)/home",
+      });
+      // TODO: Simpan token / redirect ke halaman utama
     } catch (err) {
       Alert.alert("Gagal", "Terjadi kesalahan saat login.");
     } finally {
@@ -38,67 +39,78 @@ const Login = () => {
 
   return (
     <AuthLayout>
-      <Text style={styles.title}>Login</Text>
+      <View style={styles.wrapper}>
+        <Text style={styles.title}>Masuk ke Akun</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        autoCapitalize="none"
-        keyboardType="email-address"
-        onChangeText={setEmail}
-        value={email}
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          placeholderTextColor="#999"
+          autoCapitalize="none"
+          keyboardType="email-address"
+          onChangeText={setEmail}
+          value={email}
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        onChangeText={setPassword}
-        value={password}
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor="#999"
+          secureTextEntry
+          onChangeText={setPassword}
+          value={password}
+        />
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleLogin}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Login</Text>
-        )}
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, loading && styles.buttonDisabled]}
+          onPress={handleLogin}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Login</Text>
+          )}
+        </TouchableOpacity>
+      </View>
     </AuthLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    paddingHorizontal: 24,
+  wrapper: {
+    width: "100%",
+    maxWidth: 400,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 16,
+    padding: 16,
   },
   title: {
-    fontSize: 28,
-    fontWeight: "bold",
+    fontSize: 24,
+    fontWeight: "600",
     marginBottom: 32,
     textAlign: "center",
+    color: "#333",
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
     fontSize: 16,
+    color: "#000",
     marginBottom: 16,
   },
   button: {
     backgroundColor: "#007bff",
-    paddingVertical: 12,
-    borderRadius: 8,
+    paddingVertical: 14,
+    borderRadius: 10,
     alignItems: "center",
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
   buttonText: {
     color: "#fff",

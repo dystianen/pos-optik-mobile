@@ -8,10 +8,11 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    padding: 16,
     backgroundColor: "#fff",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 40,
-    padding: 16,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
