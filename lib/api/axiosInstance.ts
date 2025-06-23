@@ -18,14 +18,12 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // if (__DEV__) {
-    //   console.log("🔼 REQUEST:", {
-    //     url: config.url,
-    //     method: config.method,
-    //     headers: config.headers,
-    //     data: config.data,
-    //   });
-    // }
+    console.log("🔼 REQUEST:", {
+      url: config.url,
+      method: config.method,
+      headers: config.headers,
+      data: config.data,
+    });
 
     return config;
   },

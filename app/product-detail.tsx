@@ -1,8 +1,10 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import { useProducts } from "@/features/products";
+import { getAccessToken } from "@/utils/auth";
 import { embedImage } from "@/utils/embedImage";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
+import { useCallback } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -22,6 +24,17 @@ export default function ProductDetail() {
     isLoading,
     isError,
   } = useProducts.getProductDetail(idData);
+
+  const handleAddToCart = useCallback(async () => {
+    const isAccessToken = await getAccessToken();
+    console.log("🚀 ~ handleAddToCart ~ isAccessToken:", isAccessToken);
+
+    if (isAccessToken) {
+      console.log("add to cart");
+    } else {
+      router.push("/login");
+    }
+  }, []);
 
   if (isLoading) {
     return (
@@ -74,7 +87,7 @@ export default function ProductDetail() {
         </View>
       </ScrollView>
 
-      <TouchableOpacity style={styles.addButton}>
+      <TouchableOpacity style={styles.addButton} onPress={handleAddToCart}>
         <Ionicons name="cart-outline" size={20} color={"#fff"} />
         <Text style={styles.addButtonText}>Add to Cart</Text>
       </TouchableOpacity>

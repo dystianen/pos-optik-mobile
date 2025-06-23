@@ -1,4 +1,6 @@
 import AuthLayout from "@/components/layouts/AuthLayout";
+import { useAuth } from "@/features/auth";
+import { setAccessToken } from "@/utils/auth";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -16,25 +18,30 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const { mutate: submitLogin } = useAuth.login();
+
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert("Validasi Gagal", "Email dan password harus diisi.");
       return;
     }
 
+    const payload = {
+      customer_email: email,
+      customer_password: password,
+    };
+
     setLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      Alert.alert("Login Berhasil", `Selamat datang, ${email}`);
-      router.push({
-        pathname: "/(tabs)/home",
-      });
-      // TODO: Simpan token / redirect ke halaman utama
-    } catch (err) {
-      Alert.alert("Gagal", "Terjadi kesalahan saat login.");
-    } finally {
-      setLoading(false);
-    }
+    submitLogin(payload, {
+      onSuccess: (res) => {
+        setAccessToken(res.data.token);
+        setLoading(false);
+        router.replace("/(tabs)/home");
+      },
+      onError: (err) => {
+        setLoading(false);
+      },
+    });
   };
 
   return (
