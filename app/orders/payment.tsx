@@ -36,17 +36,14 @@ const Payment = () => {
       Alert.alert("Validation", "Please upload proof of payment.");
       return;
     }
-    console.log({ selectedImage });
 
     setLoading(true);
-
     const formData = new FormData();
     const file = {
       uri: selectedImage.uri,
       name: selectedImage.fileName || "payment.jpg",
       type: selectedImage.mimeType || "image/jpeg",
     };
-    console.log("FILE KFJFJFJFJF: ", file);
     formData.append("proof_of_payment", file as any);
 
     payment(formData, {
@@ -57,11 +54,7 @@ const Payment = () => {
       onError: (err: any) => {
         setLoading(false);
 
-        console.log("🚀 ~ FULL ERROR OBJECT:", JSON.stringify(err, null, 2));
-
         if (err.response) {
-          console.log("❌ RESPONSE ERROR:", err.response.data);
-
           const message =
             err.response.data?.message ||
             err.response.data?.error ||
@@ -69,10 +62,8 @@ const Payment = () => {
 
           Alert.alert("Error", message);
         } else if (err.request) {
-          console.log("❌ REQUEST ERROR:", err.request);
           Alert.alert("Network Error", "No response received from the server.");
         } else {
-          console.log("❌ AXIOS ERROR:", err.message);
           Alert.alert("Error", err.message || "Something went wrong.");
         }
       },

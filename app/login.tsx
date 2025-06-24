@@ -1,6 +1,8 @@
 import AuthLayout from "@/components/layouts/AuthLayout";
+import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/features/auth";
-import { setAccessToken } from "@/utils/auth";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { decodedToken, setAccessToken } from "@/utils/auth";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -14,11 +16,11 @@ import {
 } from "react-native";
 
 const Login = () => {
+  const { setProfile } = useAuthStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  const { mutate: submitLogin } = useAuth.login();
+  const { mutate: submitLogin, isPending } = useAuth.login();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -31,15 +33,15 @@ const Login = () => {
       customer_password: password,
     };
 
-    setLoading(true);
     submitLogin(payload, {
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         setAccessToken(res.data.token);
-        setLoading(false);
+        const decoded = await decodedToken(res.data.token);
+        setProfile(decoded);
         router.replace("/(tabs)/home");
       },
       onError: (err) => {
-        setLoading(false);
+        Alert.alert(err.message);
       },
     });
   };
@@ -69,16 +71,23 @@ const Login = () => {
         />
 
         <TouchableOpacity
-          style={[styles.button, loading && styles.buttonDisabled]}
+          style={[styles.button, isPending && styles.buttonDisabled]}
           onPress={handleLogin}
-          disabled={loading}
+          disabled={isPending}
         >
-          {loading ? (
+          {isPending ? (
             <ActivityIndicator color="#fff" />
           ) : (
             <Text style={styles.buttonText}>Login</Text>
           )}
         </TouchableOpacity>
+
+        <View style={styles.redirectContainer}>
+          <Text style={styles.redirectText}>Don't have an account?</Text>
+          <TouchableOpacity onPress={() => router.replace("/register")}>
+            <Text style={styles.redirectLink}>Register</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </AuthLayout>
   );
@@ -111,7 +120,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   button: {
-    backgroundColor: "#007bff",
+    backgroundColor: Colors.primary,
     paddingVertical: 14,
     borderRadius: 10,
     alignItems: "center",
@@ -123,6 +132,21 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 16,
+  },
+  redirectContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 16,
+  },
+  redirectText: {
+    fontSize: 14,
+    color: "#666",
+  },
+  redirectLink: {
+    fontSize: 14,
+    color: Colors.primary,
+    marginLeft: 4,
+    fontWeight: "bold",
   },
 });
 

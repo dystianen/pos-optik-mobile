@@ -9,6 +9,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useCallback } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -41,7 +42,21 @@ export default function ProductDetail() {
       };
       addToCart(payload);
     } else {
-      router.push("/login");
+      Alert.alert(
+        "Login Required",
+        "You need to login to add items to cart.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Login",
+            onPress: () => router.push("/login"),
+          },
+        ],
+        { cancelable: true }
+      );
     }
   }, [detail]);
 
@@ -89,7 +104,10 @@ export default function ProductDetail() {
             <DetailItem label="Diameter" value={detail.diameter} />
             <DetailItem label="Power Range" value={detail.power_range} />
             <DetailItem label="Water Content" value={detail.water_content} />
-            <DetailItem label="UV Protection" value={detail.uv_protection} />
+            <DetailItem
+              label="UV Protection"
+              value={detail.uv_protection === "0" ? "No" : "Yes"}
+            />
             <DetailItem label="Color" value={detail.color} />
             <DetailItem label="Coating" value={detail.coating} />
           </View>

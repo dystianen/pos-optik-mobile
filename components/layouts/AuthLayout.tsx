@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 40,
     justifyContent: "center",
-    alignItems: "center",
+    // alignItems: "center",
   },
 });
 

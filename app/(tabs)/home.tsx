@@ -1,6 +1,8 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import CardProduct from "@/components/ui/CardProduct";
+import CartIcon from "@/components/ui/CartIcon";
 import { useProducts } from "@/features/products";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { TProduct } from "@/types/product";
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -18,15 +20,23 @@ const renderMenu = (items: TProduct[]) => (
 );
 
 export default function HomeScreen() {
+  const { profile } = useAuthStore();
+
   const { data: recommendations } = useProducts.getRecommendations(10);
   const { data: newEyeWear } = useProducts.getNewEyeWear();
 
   return (
     <MainLayout style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.greeting}>
-          <Text style={styles.greetingText}>Welcome, Dystian 👋</Text>
-          <Text style={styles.subtitle}>Temukan Kacamata Favoritmu!</Text>
+        <View style={styles.row}>
+          <View style={styles.greeting}>
+            <Text style={styles.greetingText}>
+              Welcome, {profile?.user_name} 👋
+            </Text>
+            <Text style={styles.subtitle}>Temukan Kacamata Favoritmu!</Text>
+          </View>
+
+          <CartIcon />
         </View>
 
         <View style={styles.carousel}>
@@ -139,5 +149,10 @@ const styles = StyleSheet.create({
     marginTop: 40,
     fontSize: 16,
     color: "#888",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });

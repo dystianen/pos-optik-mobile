@@ -1,5 +1,8 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import { Colors } from "@/constants/Colors";
+import queryClient from "@/lib/api/reactQueryClient";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { removeAccessToken } from "@/utils/auth";
 import { router } from "expo-router";
 import React, { useCallback } from "react";
 import {
@@ -14,6 +17,8 @@ import {
 import Icon from "react-native-vector-icons/Feather";
 
 export default function Profile() {
+  const { profile, clearProfile } = useAuthStore();
+
   const handleLogout = useCallback(() => {
     Alert.alert(
       "Logout",
@@ -26,10 +31,11 @@ export default function Profile() {
         {
           text: "Logout",
           style: "destructive",
-          onPress: () => {
-            router.push({
-              pathname: "/login",
-            });
+          onPress: async () => {
+            await removeAccessToken();
+            clearProfile();
+            queryClient.clear();
+            router.replace("/login");
           },
         },
       ],
@@ -46,15 +52,9 @@ export default function Profile() {
             source={{ uri: "https://randomuser.me/api/portraits/women/44.jpg" }}
             style={styles.profileImage}
           />
-          <View style={styles.cameraIcon}>
-            <Icon name="camera" size={14} color="#fff" />
-          </View>
         </View>
-        <Text style={styles.name}>Charlotte King</Text>
-        <Text style={styles.username}>@johnkinggraphics</Text>
-        <TouchableOpacity style={styles.editButton}>
-          <Text style={styles.editButtonText}>Edit Profile</Text>
-        </TouchableOpacity>
+        <Text style={styles.name}>{profile?.user_name || "Guest"}</Text>
+        <Text style={styles.username}>{profile?.email || "-"}</Text>
       </View>
 
       {/* Menu List */}
