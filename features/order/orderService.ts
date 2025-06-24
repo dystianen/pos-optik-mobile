@@ -11,7 +11,6 @@ const orderService = {
     return response.data;
   },
   async payment(payload: FormData) {
-    console.log("🚀 ~ payment ~ payload:", payload);
     const response = await axiosInstance.post("/orders/payment", payload);
     return response.data;
   },

@@ -1,6 +1,9 @@
 import CardCart from "@/components/ui/CardCart";
+import { Colors } from "@/constants/Colors";
 import { useOrder } from "@/features/order";
+import { formatCurrency } from "@/utils/format";
 import { Ionicons } from "@expo/vector-icons";
+import dayjs from "dayjs";
 import React, { useCallback, useState } from "react";
 import {
   LayoutAnimation,
@@ -45,95 +48,74 @@ const Orders = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>My Orders</Text>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        showsVerticalScrollIndicator={false}
+      >
+        {isLoading ? (
+          renderSkeleton()
+        ) : orders && orders.length > 0 ? (
+          orders.map((order: any, index: number) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.orderCard}
+              activeOpacity={0.9}
+              onPress={() => toggleCollapse(index)}
+            >
+              <View style={styles.orderHeader}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.label}>Order Date</Text>
+                  <Text style={styles.value}>
+                    {dayjs(order.order_date).format("DD MMM YYYY, HH:mm")}
+                  </Text>
 
-      <View style={styles.tableHeader}>
-        <Text style={styles.headerText}>Order Date</Text>
-        <Text style={styles.headerText}>Grand Total</Text>
-        <Text style={styles.headerText}>Status</Text>
-        <Text style={styles.headerText}>Action</Text>
-      </View>
+                  <Text style={styles.label}>Total</Text>
+                  <Text style={styles.value}>
+                    {formatCurrency(order.grand_total)}
+                  </Text>
 
-      {isLoading ? (
-        renderSkeleton()
-      ) : orders && orders.length > 0 ? (
-        orders.map((order: any, index: number) => (
-          <View key={index} style={styles.orderCard}>
-            <View style={styles.row}>
-              <Text style={styles.col}>{order.order_date}</Text>
-              <Text style={styles.col}>
-                Rp {order.grand_total?.toLocaleString()}
-              </Text>
-              <Text style={styles.col}>{order.status}</Text>
-              <TouchableOpacity
-                onPress={() => toggleCollapse(index)}
-                style={styles.actionButton}
-              >
-                <Text style={styles.actionText}>
-                  {openedIndex === index ? "Hide Items" : "Show Items"}
-                </Text>
+                  <Text style={styles.label}>Status</Text>
+                  <Text style={[styles.value, { textTransform: "capitalize" }]}>
+                    {order.status}
+                  </Text>
+                </View>
+
                 <Ionicons
                   name={openedIndex === index ? "chevron-up" : "chevron-down"}
-                  size={16}
-                  color="#007bff"
+                  size={24}
+                  color={Colors.primary}
                 />
-              </TouchableOpacity>
-            </View>
-
-            {openedIndex === index && (
-              <View style={styles.itemsContainer}>
-                {order.items && order.items.length > 0 ? (
-                  order.items.map((item: any, idx: number) => (
-                    <CardCart key={idx} item={item} hideAction />
-                  ))
-                ) : (
-                  <Text style={styles.noItemsText}>
-                    No items found in this order.
-                  </Text>
-                )}
               </View>
-            )}
+
+              {openedIndex === index && (
+                <View style={styles.itemsContainer}>
+                  {order.items && order.items.length > 0 ? (
+                    order.items.map((item: any, idx: number) => (
+                      <CardCart key={idx} item={item} hideAction />
+                    ))
+                  ) : (
+                    <Text style={styles.noItemsText}>
+                      No items found in this order.
+                    </Text>
+                  )}
+                </View>
+              )}
+            </TouchableOpacity>
+          ))
+        ) : (
+          <View style={styles.noOrderCard}>
+            <Text style={styles.noOrderText}>No Orders Found</Text>
           </View>
-        ))
-      ) : (
-        <View style={styles.noOrderCard}>
-          <Text style={styles.noOrderText}>No Orders Found</Text>
-        </View>
-      )}
-    </ScrollView>
+        )}
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 40,
-    paddingHorizontal: 16,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: "700",
-    marginBottom: 24,
-  },
-  tableHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "#e0f0ff",
-    padding: 12,
-    borderRadius: 6,
-  },
-  headerText: {
-    flex: 1,
-    fontWeight: "600",
-    fontSize: 14,
-    textAlign: "center",
-  },
-  orderCard: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
+    padding: 16,
   },
   row: {
     flexDirection: "row",
@@ -143,17 +125,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     textAlign: "center",
-  },
-  actionButton: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 4,
-  },
-  actionText: {
-    color: "#007bff",
-    marginRight: 4,
   },
   itemsContainer: {
     marginTop: 12,
@@ -174,6 +145,39 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#777",
   },
+  orderCard: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 1,
+    borderWidth: 1,
+    borderColor: "#eee",
+  },
+
+  orderHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    gap: 8,
+  },
+
+  label: {
+    fontSize: 12,
+    color: "#888",
+    marginTop: 4,
+  },
+
+  value: {
+    fontSize: 14,
+    color: "#333",
+    fontWeight: "500",
+  },
+
   // Skeleton styles
   skeletonCard: {
     backgroundColor: "#eee",

@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { useCart } from "@/features/cart";
 import { TItem } from "@/types/cart";
 import { embedImage } from "@/utils/embedImage";
@@ -31,7 +32,7 @@ const CardCart: React.FC<CardCartProps> = ({ item, hideAction = false }) => {
       </View>
       {!hideAction && (
         <TouchableOpacity onPress={handleDeleteItemCart}>
-          <Ionicons name="trash-outline" size={20} color="#f33" />
+          <Ionicons name="trash-outline" size={20} color={Colors.primary} />
         </TouchableOpacity>
       )}
     </View>

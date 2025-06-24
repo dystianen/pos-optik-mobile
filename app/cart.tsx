@@ -1,5 +1,6 @@
 import CardCart from "@/components/ui/CardCart";
 import CardCartSkeleton from "@/components/ui/CardCartSkeleton";
+import { Colors } from "@/constants/Colors";
 import { useCart } from "@/features/cart";
 import { formatCurrency } from "@/utils/format";
 import { router } from "expo-router";
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   checkoutButton: {
-    backgroundColor: "#f33",
+    backgroundColor: Colors.primary,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,

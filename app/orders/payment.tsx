@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { useOrder } from "@/features/order";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
@@ -54,19 +55,25 @@ const Payment = () => {
         router.push("/orders/waiting-confirmation");
       },
       onError: (err: any) => {
-        console.log("🚀 ~ handleSubmit ~ err:", err.message);
         setLoading(false);
 
-        // Detect network error
-        if (err?.message?.includes("Network Error") || !err.response) {
-          Alert.alert(
-            "Network Error",
-            "Please check your internet connection and try again."
-          );
-        } else if (err.response?.data?.message) {
-          Alert.alert("Error", err.response.data.message);
+        console.log("🚀 ~ FULL ERROR OBJECT:", JSON.stringify(err, null, 2));
+
+        if (err.response) {
+          console.log("❌ RESPONSE ERROR:", err.response.data);
+
+          const message =
+            err.response.data?.message ||
+            err.response.data?.error ||
+            "Unknown server error.";
+
+          Alert.alert("Error", message);
+        } else if (err.request) {
+          console.log("❌ REQUEST ERROR:", err.request);
+          Alert.alert("Network Error", "No response received from the server.");
         } else {
-          Alert.alert("Error", "Something went wrong. Please try again.");
+          console.log("❌ AXIOS ERROR:", err.message);
+          Alert.alert("Error", err.message || "Something went wrong.");
         }
       },
     });
@@ -77,7 +84,7 @@ const Payment = () => {
       <Text style={styles.title}>Upload Payment</Text>
 
       <Image
-        source={require("@/assets/images/payment.svg")}
+        source={require("@/assets/images/payment.png")}
         style={styles.banner}
         resizeMode="contain"
       />
@@ -160,7 +167,7 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
   },
   submitButton: {
-    backgroundColor: "#f33",
+    backgroundColor: Colors.primary,
     paddingVertical: 14,
     paddingHorizontal: 40,
     borderRadius: 24,

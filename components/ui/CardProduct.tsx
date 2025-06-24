@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { TProduct } from "@/types/product";
 import { embedImage } from "@/utils/embedImage";
 import { router } from "expo-router";
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   brand: {
-    color: "#377DFF",
+    color: Colors.primary,
     fontWeight: "600",
     fontSize: 12,
     marginBottom: 2,

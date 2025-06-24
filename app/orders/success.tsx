@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { router } from "expo-router";
 import React from "react";
 import {
@@ -10,13 +11,13 @@ import {
 
 const OrderSuccess = () => {
   const handleViewOrder = () => {
-    router.push("/orders/index");
+    router.push("/orders");
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image
-        source={require("@/assets/images/payment-success.png")} // pastikan file ini ada
+        source={require("@/assets/images/payment-success.png")}
         style={styles.image}
         resizeMode="contain"
       />
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   button: {
-    backgroundColor: "#007bff", // warna biru, ganti sesuai tema kamu
+    backgroundColor: Colors.primary,
     paddingVertical: 14,
     paddingHorizontal: 30,
     borderRadius: 999,

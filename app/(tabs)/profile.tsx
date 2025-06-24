@@ -1,4 +1,5 @@
 import MainLayout from "@/components/layouts/MainLayout";
+import { Colors } from "@/constants/Colors";
 import { router } from "expo-router";
 import React, { useCallback } from "react";
 import {
@@ -42,7 +43,7 @@ export default function Profile() {
       <View style={styles.profileContainer}>
         <View>
           <Image
-            source={{ uri: "https://randomuser.me/api/portraits/women/44.jpg" }} // Ganti dengan foto asli
+            source={{ uri: "https://randomuser.me/api/portraits/women/44.jpg" }}
             style={styles.profileImage}
           />
           <View style={styles.cameraIcon}>
@@ -68,6 +69,16 @@ export default function Profile() {
           </View>
           <Icon name="chevron-right" size={20} color="#999" />
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => router.push("/orders")}
+        >
+          <View style={styles.menuLeft}>
+            <Icon name={"credit-card"} size={20} color="#555" />
+            <Text style={styles.menuText}>My Orders</Text>
+          </View>
+          <Icon name="chevron-right" size={20} color="#999" />
+        </TouchableOpacity>
 
         {/* Logout */}
         <TouchableOpacity
@@ -75,8 +86,10 @@ export default function Profile() {
           onPress={handleLogout}
         >
           <View style={styles.menuLeft}>
-            <Icon name="log-out" size={20} color="#f00" />
-            <Text style={[styles.menuText, { color: "#f00" }]}>Log out</Text>
+            <Icon name="log-out" size={20} color={Colors.primary} />
+            <Text style={[styles.menuText, { color: Colors.primary }]}>
+              Log out
+            </Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -111,7 +124,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     right: 0,
-    backgroundColor: "#f33",
+    backgroundColor: Colors.primary,
     borderRadius: 10,
     padding: 4,
   },
@@ -125,7 +138,7 @@ const styles = StyleSheet.create({
     color: "#777",
   },
   editButton: {
-    backgroundColor: "#f33",
+    backgroundColor: Colors.primary,
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 20,

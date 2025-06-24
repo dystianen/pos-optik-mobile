@@ -1,4 +1,5 @@
 import MainLayout from "@/components/layouts/MainLayout";
+import { Colors } from "@/constants/Colors";
 import { useCart } from "@/features/cart";
 import { useProducts } from "@/features/products";
 import { getAccessToken } from "@/utils/auth";
@@ -48,7 +49,7 @@ export default function ProductDetail() {
     return (
       <MainLayout>
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#f33" />
+          <ActivityIndicator size="large" color={Colors.primary} />
         </View>
       </MainLayout>
     );
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#f33",
+    color: Colors.primary,
     marginVertical: 8,
   },
   section: {
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
     bottom: 16,
     left: 16,
     right: 16,
-    backgroundColor: "#f33",
+    backgroundColor: Colors.primary,
     borderRadius: 12,
     flexDirection: "row",
     justifyContent: "center",

@@ -1,4 +1,5 @@
 import CardProduct from "@/components/ui/CardProduct";
+import { Colors } from "@/constants/Colors";
 import { useProducts } from "@/features/products";
 import { debounce } from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
@@ -15,12 +16,9 @@ const Product = () => {
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState<string>("");
 
-  const {
-    data: products,
-    isLoading,
-    refetch,
-  } = useProducts.getProduct({ search: query });
-  console.log("🚀 ~ Product ~ products:", products);
+  const { data: products, isLoading } = useProducts.getProduct({
+    search: query,
+  });
 
   const debouncedSearch = useMemo(
     () =>
@@ -55,7 +53,7 @@ const Product = () => {
       {isLoading ? (
         <ActivityIndicator
           size="large"
-          color="#f33"
+          color={Colors.primary}
           style={{ marginTop: 20 }}
         />
       ) : (

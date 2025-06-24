@@ -17,14 +17,12 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    console.log({ config });
+    const isFormData = config.data instanceof FormData;
 
-    // ❗️Hapus Content-Type jika pakai FormData
-    if (
-      config.data instanceof FormData &&
-      config.headers["Content-Type"] === "application/json"
-    ) {
-      delete config.headers["Content-Type"];
+    if (!isFormData) {
+      config.headers["Content-Type"] = "application/json";
+    } else {
+      config.headers["Content-Type"] = "multipart/form-data"; // ⬅️ Penting!
     }
 
     return config;

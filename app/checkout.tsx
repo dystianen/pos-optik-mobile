@@ -1,4 +1,5 @@
 import CardCart from "@/components/ui/CardCart";
+import { Colors } from "@/constants/Colors";
 import { useCart } from "@/features/cart";
 import { useOrder } from "@/features/order";
 import { formatCurrency } from "@/utils/format";
@@ -185,11 +186,11 @@ const styles = StyleSheet.create({
   grandTotalValue: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#f33",
+    color: Colors.primary,
   },
   checkoutButton: {
     marginTop: 20,
-    backgroundColor: "#f33",
+    backgroundColor: Colors.primary,
     paddingVertical: 12,
     borderRadius: 20,
     alignItems: "center",
