@@ -5,42 +5,25 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { removeAccessToken } from "@/utils/auth";
 import { router } from "expo-router";
 import React, { useCallback } from "react";
-import {
-  Alert,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button, Dialog, Portal } from "react-native-paper";
 
 import Icon from "react-native-vector-icons/Feather";
 
 export default function Profile() {
   const { profile, clearProfile } = useAuthStore();
 
-  const handleLogout = useCallback(() => {
-    Alert.alert(
-      "Logout",
-      "Are you sure you want to logout?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Logout",
-          style: "destructive",
-          onPress: async () => {
-            await removeAccessToken();
-            clearProfile();
-            queryClient.clear();
-            router.replace("/login");
-          },
-        },
-      ],
-      { cancelable: true }
-    );
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
+
+  const handleLogout = useCallback(async () => {
+    await removeAccessToken();
+    clearProfile();
+    queryClient.clear();
+    router.replace("/login");
   }, []);
 
   return (
@@ -83,16 +66,28 @@ export default function Profile() {
         {/* Logout */}
         <TouchableOpacity
           style={[styles.menuItem, styles.logout]}
-          onPress={handleLogout}
+          onPress={showDialog}
         >
           <View style={styles.menuLeft}>
             <Icon name="log-out" size={20} color={Colors.primary} />
             <Text style={[styles.menuText, { color: Colors.primary }]}>
-              Log out
+              Logout
             </Text>
           </View>
         </TouchableOpacity>
       </View>
+
+      <Portal>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Title>Logout</Dialog.Title>
+          <Dialog.Content>
+            <Text>Are you sure you want to logout?</Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={handleLogout}>Logout</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </MainLayout>
   );
 }

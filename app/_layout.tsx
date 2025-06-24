@@ -9,6 +9,7 @@ import { StatusBar } from "expo-status-bar";
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { PaperProvider } from "react-native-paper";
 import "react-native-reanimated";
 
 // Jangan sembunyikan SplashScreen otomatis
@@ -49,40 +50,42 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={DefaultTheme}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <Stack screenOptions={{ headerShown: true }}>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="product-detail"
-              options={{
-                title: "Product Detail",
-                headerRight: () => <CartIcon />,
-              }}
-            />
-            <Stack.Screen name="checkout" options={{ title: "Checkout" }} />
-            <Stack.Screen name="cart" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="orders/index"
-              options={{ title: "My Orders" }}
-            />
-            <Stack.Screen
-              name="orders/payment"
-              options={{ title: "Payment" }}
-            />
-            <Stack.Screen
-              name="orders/waiting-confirmation"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="orders/success"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen name="login" options={{ headerShown: false }} />
-            <Stack.Screen name="register" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </GestureHandlerRootView>
-        <StatusBar style="auto" />
+        <PaperProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <Stack screenOptions={{ headerShown: true }}>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="product-detail"
+                options={{
+                  title: "Product Detail",
+                  headerRight: () => <CartIcon />,
+                }}
+              />
+              <Stack.Screen name="checkout" options={{ title: "Checkout" }} />
+              <Stack.Screen name="cart" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="orders/index"
+                options={{ title: "My Orders" }}
+              />
+              <Stack.Screen
+                name="orders/payment"
+                options={{ title: "Payment" }}
+              />
+              <Stack.Screen
+                name="orders/waiting-confirmation"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="orders/success"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen name="login" options={{ headerShown: false }} />
+              <Stack.Screen name="register" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </GestureHandlerRootView>
+          <StatusBar style="auto" />
+        </PaperProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
