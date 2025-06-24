@@ -11,6 +11,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  View,
 } from "react-native";
 
 const Register = () => {
@@ -243,6 +244,13 @@ const Register = () => {
             <Text style={styles.buttonText}>Submit</Text>
           )}
         </TouchableOpacity>
+
+        <View style={styles.redirectContainer}>
+          <Text style={styles.redirectText}>Have an account?</Text>
+          <TouchableOpacity onPress={() => router.push("/login")}>
+            <Text style={styles.redirectLink}>Login</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </AuthLayout>
   );
@@ -253,12 +261,17 @@ const styles = StyleSheet.create({
     width: "100%",
     gap: 16,
     alignSelf: "center",
+    maxWidth: 400,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 16,
+    padding: 16,
   },
   title: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: "600",
     textAlign: "center",
-    marginBottom: 10,
+    color: "#333",
   },
   sectionTitle: {
     fontWeight: "bold",
@@ -292,6 +305,21 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 16,
+  },
+  redirectContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 16,
+  },
+  redirectText: {
+    fontSize: 14,
+    color: "#666",
+  },
+  redirectLink: {
+    fontSize: 14,
+    color: Colors.primary,
+    marginLeft: 4,
+    fontWeight: "bold",
   },
 });
 

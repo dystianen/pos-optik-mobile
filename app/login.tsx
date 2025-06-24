@@ -84,7 +84,7 @@ const Login = () => {
 
         <View style={styles.redirectContainer}>
           <Text style={styles.redirectText}>Don't have an account?</Text>
-          <TouchableOpacity onPress={() => router.replace("/register")}>
+          <TouchableOpacity onPress={() => router.push("/register")}>
             <Text style={styles.redirectLink}>Register</Text>
           </TouchableOpacity>
         </View>
