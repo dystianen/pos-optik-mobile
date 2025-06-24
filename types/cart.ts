@@ -48,3 +48,10 @@ export type TCart = {
 };
 
 export type TResCart = GeneralResponse<TCart>;
+
+export type TCartItem = {
+  order_item_id: number;
+  product_name: string;
+  product_image_url: string;
+  price: number;
+};

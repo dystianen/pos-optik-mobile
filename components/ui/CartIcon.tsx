@@ -9,7 +9,7 @@ const CartIcon = () => {
   const count = cart?.total_items || 0;
 
   return (
-    <TouchableOpacity onPress={() => router.push("/checkout")}>
+    <TouchableOpacity onPress={() => router.push("/cart")}>
       <View style={styles.iconWrapper}>
         <Ionicons name="cart-outline" size={26} color="#000" />
         {count > 0 && (

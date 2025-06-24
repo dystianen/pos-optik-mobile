@@ -6,10 +6,23 @@ import type {
 } from "@/types/product";
 
 const productService = {
-  async getProduct({ category }: { category: string | null }) {
+  async getProduct({
+    category,
+    search,
+  }: {
+    category?: string | null;
+    search?: string;
+  }) {
+    const params = new URLSearchParams();
+
+    if (category) params.append("category", category);
+    if (search) params.append("search", search);
+
+    const queryString = params.toString();
     const response = await axiosInstance.get<TResProducts>(
-      `/products?category=${category}`
+      `/products${queryString ? `?${queryString}` : ""}`
     );
+
     return response.data.data;
   },
   async getProductDetail({ id }: { id: string | null }) {

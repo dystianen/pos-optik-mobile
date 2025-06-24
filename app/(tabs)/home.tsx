@@ -12,7 +12,7 @@ const renderMenu = (items: TProduct[]) => (
     contentContainerStyle={styles.scrollContainer}
   >
     {items.map((item, index) => (
-      <CardProduct key={index} item={item} />
+      <CardProduct key={index} item={item} variant="horizontal" />
     ))}
   </ScrollView>
 );
@@ -40,10 +40,22 @@ export default function HomeScreen() {
         </View>
 
         <Text style={styles.sectionTitle}>Recommendations</Text>
-        <View style={styles.menuRow}>{renderMenu(recommendations ?? [])}</View>
+        <View style={styles.menuRow}>
+          {recommendations && recommendations.length > 0 ? (
+            renderMenu(recommendations)
+          ) : (
+            <Text style={styles.emptyText}>No recommendations available.</Text>
+          )}
+        </View>
 
         <Text style={styles.sectionTitle}>New Eyewear</Text>
-        <View style={styles.menuRow}>{renderMenu(newEyeWear ?? [])}</View>
+        <View style={styles.menuRow}>
+          {newEyeWear && newEyeWear.length > 0 ? (
+            renderMenu(newEyeWear)
+          ) : (
+            <Text style={styles.emptyText}>No new eyewear found.</Text>
+          )}
+        </View>
       </ScrollView>
     </MainLayout>
   );
@@ -122,54 +134,10 @@ const styles = StyleSheet.create({
     width: 100,
     alignItems: "center",
   },
-  imagePlaceholder: {
-    width: 100,
-    height: 100,
-    backgroundColor: "#eee",
-    borderRadius: 8,
-    marginBottom: 4,
-  },
-  reviewContainer: {
-    marginTop: 10,
-  },
-  reviewTitle: {
-    fontWeight: "bold",
+  emptyText: {
+    textAlign: "center",
+    marginTop: 40,
     fontSize: 16,
-    marginBottom: 8,
-  },
-  reviewCard: {
-    flexDirection: "row",
-    padding: 12,
-    borderRadius: 12,
-    backgroundColor: "#f9f9f9",
-    marginBottom: 10,
-    alignItems: "flex-start",
-  },
-  avatar: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: "#ccc",
-    marginRight: 10,
-  },
-  reviewHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  reviewName: {
-    fontWeight: "600",
-    marginBottom: 2,
-  },
-  reviewComment: {
-    fontSize: 13,
-    color: "#555",
-  },
-  starContainer: {
-    flexDirection: "row",
-    gap: 2,
-  },
-  loadMore: {
-    alignItems: "center",
-    marginVertical: 16,
+    color: "#888",
   },
 });

@@ -1,4 +1,5 @@
 import MainLayout from "@/components/layouts/MainLayout";
+import { useCart } from "@/features/cart";
 import { useProducts } from "@/features/products";
 import { getAccessToken } from "@/utils/auth";
 import { embedImage } from "@/utils/embedImage";
@@ -24,17 +25,24 @@ export default function ProductDetail() {
     isLoading,
     isError,
   } = useProducts.getProductDetail(idData);
+  const { mutate: addToCart, isPending: isLoadinAddToCart } =
+    useCart.addToCart();
 
   const handleAddToCart = useCallback(async () => {
-    const isAccessToken = await getAccessToken();
-    console.log("🚀 ~ handleAddToCart ~ isAccessToken:", isAccessToken);
+    const isLoggedIn = await getAccessToken();
 
-    if (isAccessToken) {
-      console.log("add to cart");
+    if (isLoggedIn && detail) {
+      const payload = {
+        product_id: detail.product_id,
+        quantity: 1,
+        price: detail.product_price,
+        proof_of_payment: null,
+      };
+      addToCart(payload);
     } else {
       router.push("/login");
     }
-  }, []);
+  }, [detail]);
 
   if (isLoading) {
     return (
@@ -87,9 +95,19 @@ export default function ProductDetail() {
         </View>
       </ScrollView>
 
-      <TouchableOpacity style={styles.addButton} onPress={handleAddToCart}>
-        <Ionicons name="cart-outline" size={20} color={"#fff"} />
-        <Text style={styles.addButtonText}>Add to Cart</Text>
+      <TouchableOpacity
+        style={[styles.addButton, isLoadinAddToCart && { opacity: 0.6 }]}
+        onPress={handleAddToCart}
+        disabled={isLoadinAddToCart}
+      >
+        {isLoadinAddToCart ? (
+          <ActivityIndicator size="small" color="#fff" />
+        ) : (
+          <>
+            <Ionicons name="cart-outline" size={20} color={"#fff"} />
+            <Text style={styles.addButtonText}>Add to Cart</Text>
+          </>
+        )}
       </TouchableOpacity>
     </MainLayout>
   );

@@ -4,7 +4,6 @@ import axios, { AxiosInstance } from "axios";
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: "http://10.0.2.2:8080/api",
   headers: {
-    "Content-Type": "application/json",
     Accept: "application/json",
   },
   timeout: 3000000,
@@ -18,12 +17,15 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    console.log("🔼 REQUEST:", {
-      url: config.url,
-      method: config.method,
-      headers: config.headers,
-      data: config.data,
-    });
+    console.log({ config });
+
+    // ❗️Hapus Content-Type jika pakai FormData
+    if (
+      config.data instanceof FormData &&
+      config.headers["Content-Type"] === "application/json"
+    ) {
+      delete config.headers["Content-Type"];
+    }
 
     return config;
   },
@@ -32,5 +34,4 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 export default axiosInstance;

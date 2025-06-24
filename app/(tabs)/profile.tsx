@@ -58,23 +58,16 @@ export default function Profile() {
 
       {/* Menu List */}
       <View style={styles.menuList}>
-        {[
-          { icon: "heart", label: "Favourites" },
-          { icon: "download", label: "Downloads" },
-          { icon: "globe", label: "Language" },
-          { icon: "map-pin", label: "Location" },
-          { icon: "credit-card", label: "Subscription" },
-          { icon: "trash-2", label: "Clear cache" },
-          { icon: "clock", label: "Clear history" },
-        ].map((item, index) => (
-          <TouchableOpacity key={index} style={styles.menuItem}>
-            <View style={styles.menuLeft}>
-              <Icon name={item.icon} size={20} color="#555" />
-              <Text style={styles.menuText}>{item.label}</Text>
-            </View>
-            <Icon name="chevron-right" size={20} color="#999" />
-          </TouchableOpacity>
-        ))}
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => router.push("/cart")}
+        >
+          <View style={styles.menuLeft}>
+            <Icon name={"heart"} size={20} color="#555" />
+            <Text style={styles.menuText}>My Cart</Text>
+          </View>
+          <Icon name="chevron-right" size={20} color="#999" />
+        </TouchableOpacity>
 
         {/* Logout */}
         <TouchableOpacity

@@ -60,6 +60,11 @@ export default function RootLayout() {
               }}
             />
             <Stack.Screen name="checkout" options={{ title: "Checkout" }} />
+            <Stack.Screen name="cart" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="orders/payment"
+              options={{ title: "Payment" }}
+            />
             <Stack.Screen name="login" options={{ headerShown: false }} />
             <Stack.Screen name="+not-found" />
           </Stack>

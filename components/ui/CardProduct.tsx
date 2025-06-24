@@ -3,6 +3,7 @@ import { embedImage } from "@/utils/embedImage";
 import { router } from "expo-router";
 import React, { useCallback } from "react";
 import {
+  Dimensions,
   Image,
   StyleSheet,
   Text,
@@ -12,9 +13,14 @@ import {
 
 interface CardProductProps {
   item: TProduct;
+  variant?: "grid" | "horizontal";
 }
 
-const CardProduct: React.FC<CardProductProps> = ({ item }) => {
+const screenWidth = Dimensions.get("window").width;
+const cardSpacing = 16;
+const cardWidth = (screenWidth - cardSpacing * 3) / 2;
+
+const CardProduct: React.FC<CardProductProps> = ({ item, variant }) => {
   const handlePress = useCallback(() => {
     router.push({
       pathname: "/product-detail",
@@ -26,12 +32,21 @@ const CardProduct: React.FC<CardProductProps> = ({ item }) => {
 
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
-      <View style={styles.card}>
+      <View
+        style={[
+          styles.card,
+          variant === "grid" && { width: cardWidth },
+          variant === "horizontal" && { width: 150 },
+        ]}
+      >
         <Image
           source={{
             uri: embedImage(item.product_image_url),
           }}
-          style={styles.image}
+          style={[
+            styles.image,
+            variant === "horizontal" ? { height: 100 } : { height: 120 },
+          ]}
         />
 
         <View style={styles.textContainer}>
@@ -53,11 +68,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     elevation: 1,
     marginBottom: 16,
-    width: 150,
   },
   image: {
     width: "100%",
-    height: 100,
     borderRadius: 10,
   },
   textContainer: {

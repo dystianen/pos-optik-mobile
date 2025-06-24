@@ -1,7 +1,12 @@
-import MainLayout from "@/components/layouts/MainLayout";
+import CardCart from "@/components/ui/CardCart";
+import { useCart } from "@/features/cart";
+import { useOrder } from "@/features/order";
+import { formatCurrency } from "@/utils/format";
 import { router } from "expo-router";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
+  Alert,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -9,137 +14,192 @@ import {
   View,
 } from "react-native";
 
-export default function Checkout() {
-  const handleCancel = useCallback(() => {
-    router.back();
-  }, []);
+const Checkout = () => {
+  const { data: cart } = useCart.cart();
+  const { mutate: checkout, isPending: loading } = useOrder.checkout();
+
+  const [shippingAddress, setShippingAddress] = useState("");
+
+  const handleSubmit = useCallback(() => {
+    if (!shippingAddress.trim()) {
+      Alert.alert("Shipping address is required.");
+      return;
+    }
+
+    checkout(
+      { shipping_address: shippingAddress },
+      {
+        onSuccess: () => {
+          router.push("/orders/payment");
+        },
+        onError: (err: any) => {
+          Alert.alert("Error", err.message || "Something went wrong");
+        },
+      }
+    );
+  }, [shippingAddress]);
 
   return (
-    <MainLayout style={styles.container}>
-      <Text style={styles.label}>Table</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Checkout</Text>
+
+      <Text style={styles.label}>Shipping Address *</Text>
       <TextInput
-        placeholder="Please input table number"
+        placeholder="e.g. Jakarta"
         style={styles.input}
-        keyboardType="number-pad"
+        multiline
+        value={shippingAddress}
+        onChangeText={setShippingAddress}
       />
 
-      <Text style={styles.label}>Order</Text>
-      <View style={styles.summaryBox}>
-        <SummaryRow label="Nasi Goreng" value="Rp250.000" />
-        <SummaryRow label="Bakso Sniper" value="Rp10.000" />
-        <SummaryRow label="Ayam Bakar" value="Rp26.000" />
-        <SummaryRow label="Gedang Goreng" value="Rp10.000" />
+      <View style={styles.header}>
+        <Text style={[styles.headerText, { flex: 5 }]}>Product</Text>
+        <Text style={[styles.headerText, { flex: 3 }]}>Price</Text>
+        <Text style={[styles.headerText, { flex: 2 }]}>Action</Text>
       </View>
 
-      <Text style={styles.label}>Summary</Text>
-      <View style={styles.summaryBox}>
-        <SummaryRow label="Subtotal" value="Rp250.000" />
-        <SummaryRow label="Shipping" value="Rp10.000" />
-        <SummaryRow label="Tax(10%)" value="Rp26.000" />
-        <SummaryRow label="Service" value="Rp10.000" />
-      </View>
+      {Number(cart?.items?.length) > 0 ? (
+        cart?.items.map((item) => (
+          <CardCart key={item.order_item_id} item={item} />
+        ))
+      ) : (
+        <View style={styles.emptyCard}>
+          <Text style={styles.emptyText}>No items in cart.</Text>
+        </View>
+      )}
 
-      <View style={styles.totalRow}>
-        <Text style={styles.totalText}>Total Payment</Text>
-        <Text style={styles.totalAmount}>Rp296.000</Text>
-      </View>
+      <View style={styles.summaryCard}>
+        <View style={styles.summaryRow}>
+          <Text style={styles.summaryLabel}>Shipping Cost:</Text>
+          <Text style={styles.summaryValue}>
+            {formatCurrency(cart?.shipping_costs || 0)}
+          </Text>
+        </View>
+        <View style={styles.summaryRow}>
+          <Text style={styles.summaryLabel}>Total Price:</Text>
+          <Text style={styles.summaryValue}>
+            {formatCurrency(cart?.total_price || 0)}
+          </Text>
+        </View>
+        <View style={[styles.summaryRow, { marginTop: 12 }]}>
+          <Text style={styles.grandTotalLabel}>Grand Total:</Text>
+          <Text style={styles.grandTotalValue}>
+            {formatCurrency(cart?.grand_total || 0)}
+          </Text>
+        </View>
 
-      <View style={styles.buttonRow}>
         <TouchableOpacity
-          style={[styles.button, styles.cancelButton]}
-          onPress={handleCancel}
+          style={[styles.checkoutButton, loading && styles.disabledButton]}
+          onPress={handleSubmit}
+          disabled={loading}
         >
-          <Text style={styles.cancelText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.payButton]}>
-          <Text style={styles.payText}>Print Qris</Text>
+          <Text style={styles.checkoutButtonText}>
+            {loading ? "Processing..." : "Checkout"}
+          </Text>
         </TouchableOpacity>
       </View>
-    </MainLayout>
+    </ScrollView>
   );
-}
+};
 
-const SummaryRow = ({ label, value }: { label: string; value: string }) => (
-  <View style={styles.summaryRow}>
-    <Text>{label}</Text>
-    <Text>{value}</Text>
-  </View>
-);
+export default Checkout;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: "column",
-    gap: 10,
     padding: 16,
+    backgroundColor: "#fff",
+    paddingBottom: 100,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "700",
+    marginBottom: 20,
   },
   label: {
-    fontWeight: "bold",
     fontSize: 14,
+    fontWeight: "600",
+    marginBottom: 6,
+    color: "#333",
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 10,
+    borderColor: "#ccc",
+    borderRadius: 8,
     paddingHorizontal: 12,
-    height: 40,
-    backgroundColor: "#fff",
+    paddingVertical: 10,
+    fontSize: 14,
+    minHeight: 60,
+    marginBottom: 20,
+    textAlignVertical: "top",
   },
-  summaryBox: {
+  header: {
+    flexDirection: "row",
+    backgroundColor: "#f2f2f2",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 12,
+  },
+  headerText: {
+    fontWeight: "600",
+    fontSize: 14,
+    color: "#555",
+  },
+  emptyCard: {
+    padding: 16,
     borderWidth: 1,
     borderColor: "#ddd",
-    borderRadius: 10,
-    padding: 12,
-    backgroundColor: "#fff",
+    borderRadius: 8,
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  emptyText: {
+    color: "#999",
+    fontSize: 14,
+    fontStyle: "italic",
+  },
+  summaryCard: {
+    backgroundColor: "#f9f9f9",
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 20,
   },
   summaryRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginVertical: 4,
+    marginBottom: 6,
   },
-  totalRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
-    marginBottom: 10,
+  summaryLabel: {
+    fontSize: 14,
+    color: "#555",
   },
-  totalText: {
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  totalAmount: {
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  buttonRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
-  },
-  button: {
-    flex: 1,
-    paddingVertical: 12,
-    borderRadius: 10,
-    alignItems: "center",
-    marginHorizontal: 4,
-  },
-  cancelButton: {
-    backgroundColor: "#eee",
-  },
-  payButton: {
-    backgroundColor: "#f33",
-    shadowColor: "#f33",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  cancelText: {
-    fontWeight: "bold",
+  summaryValue: {
+    fontSize: 14,
+    fontWeight: "600",
     color: "#333",
   },
-  payText: {
-    fontWeight: "bold",
+  grandTotalLabel: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#222",
+  },
+  grandTotalValue: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#f33",
+  },
+  checkoutButton: {
+    marginTop: 20,
+    backgroundColor: "#f33",
+    paddingVertical: 12,
+    borderRadius: 20,
+    alignItems: "center",
+  },
+  checkoutButtonText: {
     color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  disabledButton: {
+    opacity: 0.6,
   },
 });
