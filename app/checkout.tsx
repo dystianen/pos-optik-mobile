@@ -95,7 +95,7 @@ const Checkout = () => {
           disabled={loading}
         >
           <Text style={styles.checkoutButtonText}>
-            {loading ? "Processing..." : "Checkout"}
+            {loading ? "Processing..." : "Payment"}
           </Text>
         </TouchableOpacity>
       </View>
