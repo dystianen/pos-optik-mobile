@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "warungkopi",
+    "scheme": "optikers",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -16,7 +16,9 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": ["android.permission.RECORD_AUDIO"],
+      "package": "com.dystian_en.optikers"
     },
     "web": {
       "bundler": "metro",
@@ -26,6 +28,13 @@
     "plugins": ["expo-router", "expo-secure-store", "expo-image-picker"],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ee815a89-1e7e-4525-b2e5-228fa600aafb"
+      }
+    },
+    "owner": "dystian_en"
   }
 }
