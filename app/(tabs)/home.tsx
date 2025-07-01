@@ -31,7 +31,7 @@ export default function HomeScreen() {
         <View style={styles.row}>
           <View style={styles.greeting}>
             <Text style={styles.greetingText}>
-              Welcome, {profile?.user_name} 👋
+              Welco, {profile?.user_name} 👋
             </Text>
             <Text style={styles.subtitle}>Temukan Kacamata Favoritmu!</Text>
           </View>
