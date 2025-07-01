@@ -9,7 +9,6 @@ import { Platform } from "react-native";
 export default function TabLayout() {
   return (
     <Tabs
-      initialRouteName="home"
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: Colors.primary,
@@ -31,7 +30,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
+        name="index"
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
