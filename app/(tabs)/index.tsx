@@ -19,7 +19,7 @@ const renderMenu = (items: TProduct[]) => (
   </ScrollView>
 );
 
-export default function HomeScreen() {
+export default function Index() {
   const { profile } = useAuthStore();
 
   const { data: recommendations } = useProducts.getRecommendations(10);
@@ -31,9 +31,9 @@ export default function HomeScreen() {
         <View style={styles.row}>
           <View style={styles.greeting}>
             <Text style={styles.greetingText}>
-              Welcome, {profile?.user_name} 👋
+              Welcome{profile?.user_name ? `, ${profile?.user_name}` : ""} 👋
             </Text>
-            <Text style={styles.subtitle}>Temukan Kacamata Favoritmu!</Text>
+            <Text style={styles.subtitle}>Find Your Favorite Glasses!</Text>
           </View>
 
           <CartIcon />

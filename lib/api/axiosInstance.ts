@@ -1,8 +1,9 @@
+import { BASE_URL } from "@/constants/BaseUrl";
 import { getAccessToken } from "@/utils/auth";
 import axios, { AxiosInstance } from "axios";
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: "http://10.0.2.2:8080/api",
+  baseURL: `${BASE_URL}/api`,
   headers: {
     Accept: "application/json",
   },

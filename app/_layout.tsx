@@ -4,47 +4,20 @@ import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useCallback, useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import "react-native-reanimated";
 
-// Jangan sembunyikan SplashScreen otomatis
-SplashScreen.preventAutoHideAsync();
-
 export default function RootLayout() {
-  const [appReady, setAppReady] = useState(false);
-
   const [fontsLoaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     DancingScript: require("../assets/fonts/DancingScript-Regular.ttf"),
   });
 
-  useEffect(() => {
-    if (fontsLoaded) {
-      // Tambahkan delay untuk efek splash
-      setTimeout(async () => {
-        setAppReady(true);
-        await SplashScreen.hideAsync();
-      }, 1500);
-    }
-  }, [fontsLoaded]);
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded && appReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded, appReady]);
-
-  if (!fontsLoaded || !appReady) {
-    return (
-      <View style={styles.splashContainer} onLayout={onLayoutRootView}>
-        <Text style={styles.splashText}>Marketplace Optik</Text>
-      </View>
-    );
+  if (!fontsLoaded) {
+    return null;
   }
 
   return (
