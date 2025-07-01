@@ -23,7 +23,8 @@
       },
       "edgeToEdgeEnabled": true,
       "permissions": ["android.permission.RECORD_AUDIO"],
-      "package": "com.dystian_en.optikers"
+      "package": "com.dystian_en.optikers",
+      "usesCleartextTraffic": true
     },
     "web": {
       "bundler": "metro",
@@ -47,7 +48,8 @@
           },
           "imageWidth": 300
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
