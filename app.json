@@ -14,7 +14,8 @@
         "dark": "./assets/icons/ios-dark.png",
         "light": "./assets/icons/ios-light.png",
         "tinted": "./assets/icons/ios-tinted.png"
-      }
+      },
+      "bundleIdentifier": "com.dystian-en.optikers"
     },
     "android": {
       "adaptiveIcon": {
@@ -22,7 +23,9 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "permissions": ["android.permission.RECORD_AUDIO"],
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
       "package": "com.dystian_en.optikers",
       "usesCleartextTraffic": true
     },
