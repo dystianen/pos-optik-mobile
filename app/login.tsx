@@ -38,7 +38,7 @@ const Login = () => {
         setAccessToken(res.data.token);
         const decoded = await decodedToken(res.data.token);
         setProfile(decoded);
-        router.replace("/(tabs)/home");
+        router.replace("/(tabs)");
       },
       onError: (err) => {
         Alert.alert(err.message);

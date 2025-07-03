@@ -86,12 +86,14 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="Nama Lengkap"
+          placeholderTextColor="#999"
           value={form.customer_name}
           onChangeText={(text) => handleChange("customer_name", text)}
         />
         <TextInput
           style={styles.input}
           placeholder="Email"
+          placeholderTextColor="#999"
           autoCapitalize="none"
           keyboardType="email-address"
           value={form.customer_email}
@@ -100,6 +102,7 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="Password"
+          placeholderTextColor="#999"
           secureTextEntry
           value={form.customer_password}
           onChangeText={(text) => handleChange("customer_password", text)}
@@ -107,6 +110,7 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="No. HP"
+          placeholderTextColor="#999"
           keyboardType="phone-pad"
           value={form.customer_phone}
           onChangeText={(text) => handleChange("customer_phone", text)}
@@ -114,18 +118,21 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="Tanggal Lahir (e.g., 2000-03-12)"
+          placeholderTextColor="#999"
           value={form.customer_dob}
           onChangeText={(text) => handleChange("customer_dob", text)}
         />
         <TextInput
           style={styles.input}
           placeholder="Jenis Kelamin (Male/Female)"
+          placeholderTextColor="#999"
           value={form.customer_gender}
           onChangeText={(text) => handleChange("customer_gender", text)}
         />
         <TextInput
           style={styles.input}
           placeholder="Pekerjaan"
+          placeholderTextColor="#999"
           value={form.customer_occupation}
           onChangeText={(text) => handleChange("customer_occupation", text)}
         />
@@ -135,6 +142,7 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="Warna Favorit"
+          placeholderTextColor="#999"
           value={form.customer_preferences.color}
           onChangeText={(text) =>
             handleChange("customer_preferences.color", text)
@@ -143,6 +151,7 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="Material"
+          placeholderTextColor="#999"
           value={form.customer_preferences.material}
           onChangeText={(text) =>
             handleChange("customer_preferences.material", text)
@@ -151,6 +160,7 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="Gaya Frame"
+          placeholderTextColor="#999"
           value={form.customer_preferences.frame_style}
           onChangeText={(text) =>
             handleChange("customer_preferences.frame_style", text)
@@ -162,6 +172,7 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="Kondisi Mata"
+          placeholderTextColor="#999"
           value={form.customer_eye_history.condition}
           onChangeText={(text) =>
             handleChange("customer_eye_history.condition", text)
@@ -170,6 +181,7 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="Terakhir Periksa (e.g., 2024-03-11)"
+          placeholderTextColor="#999"
           value={form.customer_eye_history.last_checkup}
           onChangeText={(text) =>
             handleChange("customer_eye_history.last_checkup", text)
@@ -179,6 +191,7 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="Axis"
+          placeholderTextColor="#999"
           keyboardType="numeric"
           value={form.customer_eye_history.left_eye.axis}
           onChangeText={(text) =>
@@ -188,6 +201,7 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="Sphere"
+          placeholderTextColor="#999"
           keyboardType="numeric"
           value={form.customer_eye_history.left_eye.sphere}
           onChangeText={(text) =>
@@ -197,6 +211,7 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="Cylinder"
+          placeholderTextColor="#999"
           keyboardType="numeric"
           value={form.customer_eye_history.left_eye.cylinder}
           onChangeText={(text) =>
@@ -208,6 +223,7 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="Axis"
+          placeholderTextColor="#999"
           keyboardType="numeric"
           value={form.customer_eye_history.right_eye.axis}
           onChangeText={(text) =>
@@ -217,6 +233,7 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="Sphere"
+          placeholderTextColor="#999"
           keyboardType="numeric"
           value={form.customer_eye_history.right_eye.sphere}
           onChangeText={(text) =>
@@ -226,6 +243,7 @@ const Register = () => {
         <TextInput
           style={styles.input}
           placeholder="Cylinder"
+          placeholderTextColor="#999"
           keyboardType="numeric"
           value={form.customer_eye_history.right_eye.cylinder}
           onChangeText={(text) =>
@@ -286,10 +304,13 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 12,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
     fontSize: 16,
+    color: "#000",
+    marginBottom: 16,
   },
   button: {
     backgroundColor: Colors.primary,
