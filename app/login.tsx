@@ -49,7 +49,7 @@ const Login = () => {
   return (
     <AuthLayout>
       <View style={styles.wrapper}>
-        <Text style={styles.title}>Masuk ke Akun</Text>
+        <Text style={styles.title}>Login</Text>
 
         <TextInput
           style={styles.input}
