@@ -5,25 +5,38 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { removeAccessToken } from "@/utils/auth";
 import { router } from "expo-router";
 import React, { useCallback } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Button, Dialog, Portal } from "react-native-paper";
-
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 
 export default function Profile() {
   const { profile, clearProfile } = useAuthStore();
 
-  const [visible, setVisible] = React.useState(false);
-
-  const showDialog = () => setVisible(true);
-
-  const hideDialog = () => setVisible(false);
-
-  const handleLogout = useCallback(async () => {
-    await removeAccessToken();
-    clearProfile();
-    queryClient.clear();
-    router.replace("/login");
+  const handleLogout = useCallback(() => {
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to logout?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Logout",
+          style: "destructive",
+          onPress: async () => {
+            await removeAccessToken();
+            clearProfile();
+            queryClient.clear();
+            router.replace("/login");
+          },
+        },
+      ],
+      { cancelable: true }
+    );
   }, []);
 
   return (
@@ -66,7 +79,7 @@ export default function Profile() {
         {/* Logout */}
         <TouchableOpacity
           style={[styles.menuItem, styles.logout]}
-          onPress={showDialog}
+          onPress={handleLogout}
         >
           <View style={styles.menuLeft}>
             <Icon name="log-out" size={20} color={Colors.primary} />
@@ -76,18 +89,6 @@ export default function Profile() {
           </View>
         </TouchableOpacity>
       </View>
-
-      <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>Logout</Dialog.Title>
-          <Dialog.Content>
-            <Text>Are you sure you want to logout?</Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={handleLogout}>Logout</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
     </MainLayout>
   );
 }
@@ -96,15 +97,6 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
     paddingTop: 50,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "600",
   },
   profileContainer: {
     alignItems: "center",
@@ -115,14 +107,6 @@ const styles = StyleSheet.create({
     height: 90,
     borderRadius: 45,
   },
-  cameraIcon: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    backgroundColor: Colors.primary,
-    borderRadius: 10,
-    padding: 4,
-  },
   name: {
     fontSize: 16,
     fontWeight: "700",
@@ -131,17 +115,6 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 14,
     color: "#777",
-  },
-  editButton: {
-    backgroundColor: Colors.primary,
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-    marginTop: 10,
-  },
-  editButtonText: {
-    color: "#fff",
-    fontWeight: "600",
   },
   menuList: {
     borderWidth: 1,

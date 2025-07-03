@@ -1,14 +1,24 @@
 import CartIcon from "@/components/ui/CartIcon";
+import { Colors } from "@/constants/Colors";
 import queryClient from "@/lib/api/reactQueryClient";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { PaperProvider } from "react-native-paper";
+import { MD3LightTheme, PaperProvider } from "react-native-paper";
 import "react-native-reanimated";
+
+const lightTheme = {
+  ...MD3LightTheme,
+  dark: false, // Explicitly set dark to false for light mode
+  // You can also customize colors or other theme properties here
+  colors: {
+    ...DefaultTheme.colors,
+    primary: Colors.primary,
+  },
+};
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -23,7 +33,7 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={DefaultTheme}>
-        <PaperProvider>
+        <PaperProvider theme={lightTheme}>
           <GestureHandlerRootView style={{ flex: 1 }}>
             <Stack screenOptions={{ headerShown: true }}>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -63,17 +73,3 @@ export default function RootLayout() {
     </QueryClientProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  splashContainer: {
-    flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  splashText: {
-    fontSize: 42,
-    fontFamily: "DancingScript",
-    color: "#000",
-  },
-});
