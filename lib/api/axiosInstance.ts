@@ -1,6 +1,6 @@
 import { BASE_URL } from "@/constants/BaseUrl";
 import { getAccessToken } from "@/utils/auth";
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: `${BASE_URL}/api`,
@@ -31,6 +31,16 @@ axiosInstance.interceptors.request.use(
   (error) => {
     console.error("❌ REQUEST ERROR:", error);
     return Promise.reject(error);
+  }
+);
+
+axiosInstance.interceptors.response.use(
+  (response: AxiosResponse) => {
+    return response;
+  },
+  (error) => {
+    const err = error.response?.data;
+    return Promise.reject<AxiosError>(err);
   }
 );
 export default axiosInstance;

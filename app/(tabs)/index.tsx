@@ -4,8 +4,15 @@ import CartIcon from "@/components/ui/CartIcon";
 import { useProducts } from "@/features/products";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { TProduct } from "@/types/product";
-import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useCallback, useState } from "react";
+import {
+  Image,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 const renderMenu = (items: TProduct[]) => (
   <ScrollView
@@ -19,15 +26,56 @@ const renderMenu = (items: TProduct[]) => (
   </ScrollView>
 );
 
+const SkeletonCard = () => <View style={styles.skeletonCard} />;
+
+const SkeletonHorizontalList = ({ count = 3 }: { count?: number }) => (
+  <ScrollView
+    horizontal
+    showsHorizontalScrollIndicator={false}
+    contentContainerStyle={styles.scrollContainer}
+  >
+    {Array.from({ length: count }).map((_, i) => (
+      <SkeletonCard key={i} />
+    ))}
+  </ScrollView>
+);
+
 export default function Index() {
   const { profile } = useAuthStore();
 
-  const { data: recommendations } = useProducts.getRecommendations(10);
-  const { data: newEyeWear } = useProducts.getNewEyeWear();
+  const {
+    data: recommendations,
+    refetch: refetchRecommendations,
+    isLoading: isLoadingRecommendations,
+  } = useProducts.getRecommendations(10);
+
+  const {
+    data: newEyeWear,
+    refetch: refetchNewEyeWear,
+    isLoading: isLoadingNewEyeWear,
+  } = useProducts.getNewEyeWear();
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await Promise.all([refetchRecommendations(), refetchNewEyeWear()]);
+    } catch (err) {
+      console.error("Refresh error:", err);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [refetchRecommendations, refetchNewEyeWear]);
 
   return (
     <MainLayout style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View style={styles.row}>
           <View style={styles.greeting}>
             <Text style={styles.greetingText}>
@@ -51,7 +99,9 @@ export default function Index() {
 
         <Text style={styles.sectionTitle}>Recommendations</Text>
         <View style={styles.menuRow}>
-          {recommendations && recommendations.length > 0 ? (
+          {isLoadingRecommendations ? (
+            <SkeletonHorizontalList />
+          ) : recommendations && recommendations.length > 0 ? (
             renderMenu(recommendations)
           ) : (
             <Text style={styles.emptyText}>No recommendations available.</Text>
@@ -60,7 +110,9 @@ export default function Index() {
 
         <Text style={styles.sectionTitle}>New Eyewear</Text>
         <View style={styles.menuRow}>
-          {newEyeWear && newEyeWear.length > 0 ? (
+          {isLoadingNewEyeWear ? (
+            <SkeletonHorizontalList />
+          ) : newEyeWear && newEyeWear.length > 0 ? (
             renderMenu(newEyeWear)
           ) : (
             <Text style={styles.emptyText}>No new eyewear found.</Text>
@@ -146,7 +198,8 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     textAlign: "center",
-    marginTop: 40,
+    marginTop: 20,
+    marginBottom: 20,
     fontSize: 16,
     color: "#888",
   },
@@ -154,5 +207,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  skeletonCard: {
+    width: 120,
+    height: 160,
+    borderRadius: 12,
+    backgroundColor: "#e0e0e0",
   },
 });
