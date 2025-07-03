@@ -1,8 +1,9 @@
 import { Colors } from "@/constants/Colors";
 import { router } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,12 +11,26 @@ import {
 } from "react-native";
 
 const OrderSuccess = () => {
+  const [refreshing, setRefreshing] = useState(false);
+
   const handleViewOrder = () => {
     router.push("/orders");
   };
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    // Simulasi proses refresh, misalnya memuat ulang status pesanan
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setRefreshing(false);
+  };
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+      }
+    >
       <Image
         source={require("@/assets/images/payment-success.png")}
         style={styles.image}

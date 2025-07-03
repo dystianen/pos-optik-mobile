@@ -24,7 +24,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert("Validasi Gagal", "Email dan password harus diisi.");
+      Alert.alert("Error", "Email & password is required.");
       return;
     }
 
@@ -41,7 +41,7 @@ const Login = () => {
         router.replace("/(tabs)");
       },
       onError: (err) => {
-        Alert.alert(err.message);
+        Alert.alert("Error", err.message);
       },
     });
   };

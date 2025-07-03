@@ -8,6 +8,7 @@ import React, { useCallback, useState } from "react";
 import {
   LayoutAnimation,
   Platform,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -24,8 +25,18 @@ if (
 }
 
 const Orders = () => {
-  const { data: orders, isLoading } = useOrder.orders();
+  const { data: orders, isLoading, refetch } = useOrder.orders();
   const [openedIndex, setOpenedIndex] = useState<number | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await refetch();
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   const toggleCollapse = useCallback((index: number) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -52,6 +63,9 @@ const Orders = () => {
       <ScrollView
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
       >
         {isLoading ? (
           renderSkeleton()
@@ -113,6 +127,8 @@ const Orders = () => {
   );
 };
 
+export default Orders;
+
 const styles = StyleSheet.create({
   container: {
     padding: 16,
@@ -158,20 +174,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#eee",
   },
-
   orderHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
     gap: 8,
   },
-
   label: {
     fontSize: 12,
     color: "#888",
     marginTop: 4,
   },
-
   value: {
     fontSize: 14,
     color: "#333",
@@ -228,5 +241,3 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
 });
-
-export default Orders;

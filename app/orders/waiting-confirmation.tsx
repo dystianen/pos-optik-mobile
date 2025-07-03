@@ -1,14 +1,32 @@
 import { useOrder } from "@/features/order";
 import { useNavigation } from "@react-navigation/native";
 import { router } from "expo-router";
-import React, { useEffect } from "react";
-import { Dimensions, Image, ScrollView, StyleSheet, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  Dimensions,
+  Image,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+} from "react-native";
 
 const { width } = Dimensions.get("window");
 
 const WaitingConfirmation = () => {
   const navigation = useNavigation();
   const { data, refetch } = useOrder.checkStatus();
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await refetch();
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -25,7 +43,12 @@ const WaitingConfirmation = () => {
   }, [data, navigation]);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+      }
+    >
       <Image
         source={require("@/assets/images/waiting.png")}
         style={styles.image}
@@ -43,6 +66,8 @@ const WaitingConfirmation = () => {
     </ScrollView>
   );
 };
+
+export default WaitingConfirmation;
 
 const styles = StyleSheet.create({
   container: {
@@ -74,5 +99,3 @@ const styles = StyleSheet.create({
     color: "#000",
   },
 });
-
-export default WaitingConfirmation;

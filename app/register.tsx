@@ -1,11 +1,14 @@
 import AuthLayout from "@/components/layouts/AuthLayout";
 import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/features/auth";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Picker } from "@react-native-picker/picker";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -37,6 +40,9 @@ const Register = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [showDateDob, setShowDateDob] = useState(false);
+  const [showDateLastCheckup, setShowDateLastCheckup] = useState(false);
+
   const { mutate: submitRegister } = useAuth.register();
 
   const handleChange = (path: string, value: string) => {
@@ -68,7 +74,7 @@ const Register = () => {
           router.replace("/login");
         },
         onError: (err) => {
-          Alert.alert("Gagal", err.message || "Registration failed");
+          Alert.alert("Error", err.message || "Registration failed");
           setLoading(false);
         },
       }
@@ -85,7 +91,7 @@ const Register = () => {
 
         <TextInput
           style={styles.input}
-          placeholder="Nama Lengkap"
+          placeholder="Fullname"
           placeholderTextColor="#999"
           value={form.customer_name}
           onChangeText={(text) => handleChange("customer_name", text)}
@@ -109,29 +115,51 @@ const Register = () => {
         />
         <TextInput
           style={styles.input}
-          placeholder="No. HP"
+          placeholder="Phone Number"
           placeholderTextColor="#999"
           keyboardType="phone-pad"
           value={form.customer_phone}
           onChangeText={(text) => handleChange("customer_phone", text)}
         />
+        <Text style={styles.sectionLabel}>Date of Birth</Text>
+        <TouchableOpacity
+          onPress={() => setShowDateDob(true)}
+          style={styles.input}
+        >
+          <Text style={{ color: form.customer_dob ? "#000" : "#999" }}>
+            {form.customer_dob || "Select Date of Birth"}
+          </Text>
+        </TouchableOpacity>
+        {showDateDob && (
+          <DateTimePicker
+            value={form.customer_dob ? new Date(form.customer_dob) : new Date()}
+            mode="date"
+            display={Platform.OS === "ios" ? "spinner" : "default"}
+            maximumDate={new Date()}
+            onChange={(event, selectedDate) => {
+              setShowDateDob(false);
+              if (selectedDate) {
+                const iso = selectedDate.toISOString().split("T")[0]; // format YYYY-MM-DD
+                handleChange("customer_dob", iso);
+              }
+            }}
+          />
+        )}
+
+        <Text style={styles.sectionLabel}>Gender</Text>
+        <View style={styles.pickerWrapper}>
+          <Picker
+            selectedValue={form.customer_gender}
+            onValueChange={(value) => handleChange("customer_gender", value)}
+          >
+            <Picker.Item label="Select Gender" value="" />
+            <Picker.Item label="Male" value="Male" />
+            <Picker.Item label="Female" value="Female" />
+          </Picker>
+        </View>
         <TextInput
           style={styles.input}
-          placeholder="Tanggal Lahir (e.g., 2000-03-12)"
-          placeholderTextColor="#999"
-          value={form.customer_dob}
-          onChangeText={(text) => handleChange("customer_dob", text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Jenis Kelamin (Male/Female)"
-          placeholderTextColor="#999"
-          value={form.customer_gender}
-          onChangeText={(text) => handleChange("customer_gender", text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Pekerjaan"
+          placeholder="Occupation"
           placeholderTextColor="#999"
           value={form.customer_occupation}
           onChangeText={(text) => handleChange("customer_occupation", text)}
@@ -141,7 +169,7 @@ const Register = () => {
         <Text style={styles.sectionTitle}>Preferensi</Text>
         <TextInput
           style={styles.input}
-          placeholder="Warna Favorit"
+          placeholder="Favorit Color"
           placeholderTextColor="#999"
           value={form.customer_preferences.color}
           onChangeText={(text) =>
@@ -159,7 +187,7 @@ const Register = () => {
         />
         <TextInput
           style={styles.input}
-          placeholder="Gaya Frame"
+          placeholder="Frame Style"
           placeholderTextColor="#999"
           value={form.customer_preferences.frame_style}
           onChangeText={(text) =>
@@ -168,26 +196,51 @@ const Register = () => {
         />
 
         {/* Eye History */}
-        <Text style={styles.sectionTitle}>Riwayat Mata</Text>
+        <Text style={styles.sectionTitle}>Eye History</Text>
         <TextInput
           style={styles.input}
-          placeholder="Kondisi Mata"
+          placeholder="Eye Conditions"
           placeholderTextColor="#999"
           value={form.customer_eye_history.condition}
           onChangeText={(text) =>
             handleChange("customer_eye_history.condition", text)
           }
         />
-        <TextInput
+
+        <Text style={styles.sectionLabel}>Last Checkup</Text>
+        <TouchableOpacity
+          onPress={() => setShowDateLastCheckup(true)}
           style={styles.input}
-          placeholder="Terakhir Periksa (e.g., 2024-03-11)"
-          placeholderTextColor="#999"
-          value={form.customer_eye_history.last_checkup}
-          onChangeText={(text) =>
-            handleChange("customer_eye_history.last_checkup", text)
-          }
-        />
-        <Text style={styles.sectionLabel}>Mata Kiri</Text>
+        >
+          <Text
+            style={{
+              color: form.customer_eye_history.last_checkup ? "#000" : "#999",
+            }}
+          >
+            {form.customer_eye_history.last_checkup || "Select Last Checkup"}
+          </Text>
+        </TouchableOpacity>
+        {showDateLastCheckup && (
+          <DateTimePicker
+            value={
+              form.customer_eye_history.last_checkup
+                ? new Date(form.customer_eye_history.last_checkup)
+                : new Date()
+            }
+            mode="date"
+            display={Platform.OS === "ios" ? "spinner" : "default"}
+            maximumDate={new Date()}
+            onChange={(event, selectedDate) => {
+              setShowDateLastCheckup(false);
+              if (selectedDate) {
+                const iso = selectedDate.toISOString().split("T")[0]; // format YYYY-MM-DD
+                handleChange("customer_eye_history.last_checkup", iso);
+              }
+            }}
+          />
+        )}
+
+        <Text style={styles.sectionLabel}>Left Eye</Text>
         <TextInput
           style={styles.input}
           placeholder="Axis"
@@ -219,7 +272,7 @@ const Register = () => {
           }
         />
 
-        <Text style={styles.sectionLabel}>Mata Kanan</Text>
+        <Text style={styles.sectionLabel}>Right Eye</Text>
         <TextInput
           style={styles.input}
           placeholder="Axis"
@@ -341,6 +394,13 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     marginLeft: 4,
     fontWeight: "bold",
+  },
+  pickerWrapper: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    marginBottom: 16,
+    overflow: "hidden",
   },
 });
 

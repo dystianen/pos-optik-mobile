@@ -4,9 +4,10 @@ import { Colors } from "@/constants/Colors";
 import { useCart } from "@/features/cart";
 import { formatCurrency } from "@/utils/format";
 import { router } from "expo-router";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
   FlatList,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,11 +15,21 @@ import {
 } from "react-native";
 
 const Cart = () => {
-  const { data: cart, isLoading } = useCart.cart();
+  const { data: cart, isLoading, refetch } = useCart.cart();
+  const [refreshing, setRefreshing] = useState(false);
 
   const handleCheckout = useCallback(() => {
     router.push("/checkout");
   }, []);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await refetch();
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   const renderHeader = () => (
     <View style={styles.header}>
@@ -54,6 +65,9 @@ const Cart = () => {
           renderItem={({ item }) => <CardCart item={item} />}
           contentContainerStyle={{ paddingBottom: 20 }}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }
         />
       ) : (
         <View style={styles.emptyCard}>

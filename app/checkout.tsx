@@ -7,6 +7,7 @@ import { router } from "expo-router";
 import React, { useCallback, useState } from "react";
 import {
   Alert,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -16,10 +17,11 @@ import {
 } from "react-native";
 
 const Checkout = () => {
-  const { data: cart } = useCart.cart();
+  const { data: cart, refetch } = useCart.cart();
   const { mutate: checkout, isPending: loading } = useOrder.checkout();
 
   const [shippingAddress, setShippingAddress] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
 
   const handleSubmit = useCallback(() => {
     if (!shippingAddress.trim()) {
@@ -40,14 +42,30 @@ const Checkout = () => {
     );
   }, [shippingAddress]);
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await refetch();
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      style={styles.scrollView}
+      contentContainerStyle={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+      }
+    >
       <Text style={styles.title}>Checkout</Text>
 
       <Text style={styles.label}>Shipping Address *</Text>
       <TextInput
         placeholder="e.g. Jakarta"
         style={styles.input}
+        placeholderTextColor="#999"
         multiline
         value={shippingAddress}
         onChangeText={setShippingAddress}
@@ -106,10 +124,15 @@ const Checkout = () => {
 export default Checkout;
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
+  scrollView: {
+    flex: 1,
     backgroundColor: "#fff",
+  },
+  container: {
+    flexGrow: 1,
+    padding: 16,
     paddingBottom: 100,
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 22,
@@ -125,6 +148,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
+    color: "#000000",
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
