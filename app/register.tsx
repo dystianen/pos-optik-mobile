@@ -156,6 +156,7 @@ const Register = () => {
         <View style={styles.pickerWrapper}>
           <Picker
             placeholder="Gender"
+            style={{ color: "black" }}
             selectedValue={form.customer_gender}
             onValueChange={(value) => handleChange("customer_gender", value)}
           >
