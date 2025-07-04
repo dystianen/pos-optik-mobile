@@ -121,13 +121,20 @@ const Register = () => {
           value={form.customer_phone}
           onChangeText={(text) => handleChange("customer_phone", text)}
         />
-        <Text style={styles.sectionLabel}>Date of Birth</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Occupation"
+          placeholderTextColor="#999"
+          value={form.customer_occupation}
+          onChangeText={(text) => handleChange("customer_occupation", text)}
+        />
+
         <TouchableOpacity
           onPress={() => setShowDateDob(true)}
           style={styles.input}
         >
           <Text style={{ color: form.customer_dob ? "#000" : "#999" }}>
-            {form.customer_dob || "Select Date of Birth"}
+            {form.customer_dob || "Date of Birth"}
           </Text>
         </TouchableOpacity>
         {showDateDob && (
@@ -146,9 +153,9 @@ const Register = () => {
           />
         )}
 
-        <Text style={styles.sectionLabel}>Gender</Text>
         <View style={styles.pickerWrapper}>
           <Picker
+            placeholder="Gender"
             selectedValue={form.customer_gender}
             onValueChange={(value) => handleChange("customer_gender", value)}
           >
@@ -157,13 +164,6 @@ const Register = () => {
             <Picker.Item label="Female" value="Female" />
           </Picker>
         </View>
-        <TextInput
-          style={styles.input}
-          placeholder="Occupation"
-          placeholderTextColor="#999"
-          value={form.customer_occupation}
-          onChangeText={(text) => handleChange("customer_occupation", text)}
-        />
 
         {/* Preferences */}
         <Text style={styles.sectionTitle}>Preferensi</Text>
@@ -196,7 +196,6 @@ const Register = () => {
         />
 
         {/* Eye History */}
-        <Text style={styles.sectionTitle}>Eye History</Text>
         <TextInput
           style={styles.input}
           placeholder="Eye Conditions"
@@ -207,7 +206,6 @@ const Register = () => {
           }
         />
 
-        <Text style={styles.sectionLabel}>Last Checkup</Text>
         <TouchableOpacity
           onPress={() => setShowDateLastCheckup(true)}
           style={styles.input}
@@ -217,7 +215,7 @@ const Register = () => {
               color: form.customer_eye_history.last_checkup ? "#000" : "#999",
             }}
           >
-            {form.customer_eye_history.last_checkup || "Select Last Checkup"}
+            {form.customer_eye_history.last_checkup || "Last Checkup"}
           </Text>
         </TouchableOpacity>
         {showDateLastCheckup && (
@@ -399,8 +397,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 10,
+    paddingHorizontal: 8,
+    color: "#000",
     marginBottom: 16,
-    overflow: "hidden",
   },
 });
 
