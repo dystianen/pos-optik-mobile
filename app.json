@@ -23,9 +23,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ],
+      "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.dystian_en.optikers",
       "usesCleartextTraffic": true
     },
@@ -45,10 +43,6 @@
           "backgroundColor": "#ffffff",
           "image": "./assets/icons/splash-icon-dark.png",
           "resizeMode": "contain",
-          "dark": {
-            "image": "./assets/icons/splash-icon-light.png",
-            "backgroundColor": "#000000"
-          },
           "imageWidth": 300
         }
       ],
