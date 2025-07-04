@@ -1,3 +1,4 @@
+import MainLayout from "@/components/layouts/MainLayout";
 import CardProduct from "@/components/ui/CardProduct";
 import { Colors } from "@/constants/Colors";
 import { useProducts } from "@/features/products";
@@ -9,7 +10,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  View,
 } from "react-native";
 
 const Product = () => {
@@ -40,11 +40,12 @@ const Product = () => {
   }, [debouncedSearch]);
 
   return (
-    <View style={styles.container}>
+    <MainLayout style={styles.container}>
       <Text style={styles.title}>Products</Text>
 
       <TextInput
         placeholder="Search product..."
+        placeholderTextColor="#999"
         value={search}
         onChangeText={handleSearch}
         style={styles.searchInput}
@@ -70,7 +71,7 @@ const Product = () => {
           }
         />
       )}
-    </View>
+    </MainLayout>
   );
 };
 
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 16,
-    paddingTop: 30,
+    paddingTop: 40,
   },
   title: {
     fontSize: 20,
@@ -97,6 +98,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     marginBottom: 20,
     fontSize: 16,
+    color: "#000000",
   },
   row: {
     justifyContent: "space-between",

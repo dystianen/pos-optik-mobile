@@ -1,3 +1,4 @@
+import MainLayout from "@/components/layouts/MainLayout";
 import CardCart from "@/components/ui/CardCart";
 import CardCartSkeleton from "@/components/ui/CardCartSkeleton";
 import { Colors } from "@/constants/Colors";
@@ -51,7 +52,7 @@ const Cart = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <MainLayout style={styles.container}>
       <Text style={styles.title}>My Cart</Text>
 
       {renderHeader()}
@@ -76,7 +77,7 @@ const Cart = () => {
       )}
 
       {renderFooter()}
-    </View>
+    </MainLayout>
   );
 };
 
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "700",
     marginBottom: 24,
     color: "#333",

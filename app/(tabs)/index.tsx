@@ -126,18 +126,18 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
-    paddingTop: 30,
+    paddingTop: 40,
   },
   greeting: {
     marginTop: 8,
   },
   greetingText: {
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 20,
   },
   subtitle: {
     fontWeight: "bold",
-    fontSize: 14,
+    fontSize: 16,
   },
   carousel: {
     height: 160,
