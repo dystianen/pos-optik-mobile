@@ -45,7 +45,7 @@ export default function RootLayout() {
                 }}
               />
               <Stack.Screen name="checkout" options={{ title: "Checkout" }} />
-              <Stack.Screen name="cart" options={{ headerShown: false }} />
+              <Stack.Screen name="cart" options={{ title: "My Cart" }} />
               <Stack.Screen
                 name="orders/index"
                 options={{ title: "My Orders" }}

@@ -53,8 +53,6 @@ const Cart = () => {
 
   return (
     <MainLayout style={styles.container}>
-      <Text style={styles.title}>My Cart</Text>
-
       {renderHeader()}
 
       {isLoading ? (

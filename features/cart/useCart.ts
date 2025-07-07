@@ -21,6 +21,7 @@ export const useCart = {
     return useQuery({
       queryKey: ["cart"],
       queryFn: cartService.cart,
+      gcTime: 0,
     });
   },
   deleteItemCart() {

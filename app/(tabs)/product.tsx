@@ -18,6 +18,7 @@ const Product = () => {
 
   const { data: products, isLoading } = useProducts.getProduct({
     search: query,
+    limit: "100",
   });
 
   const debouncedSearch = useMemo(

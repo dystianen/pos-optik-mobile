@@ -9,14 +9,17 @@ const productService = {
   async getProduct({
     category,
     search,
+    limit,
   }: {
     category?: string | null;
     search?: string;
+    limit?: string;
   }) {
     const params = new URLSearchParams();
 
     if (category) params.append("category", category);
     if (search) params.append("search", search);
+    if (limit) params.append("limit", limit);
 
     const queryString = params.toString();
     const response = await axiosInstance.get<TResProducts>(
@@ -35,9 +38,9 @@ const productService = {
     );
     return response.data.data;
   },
-  async getNewEyeWear() {
+  async getNewEyeWear({ limit }: { limit: number }) {
     const response = await axiosInstance.get<TResProducts>(
-      "/products/new-eyewear"
+      `/products/new-eyewear?limit=${limit}`
     );
     return response.data.data;
   },

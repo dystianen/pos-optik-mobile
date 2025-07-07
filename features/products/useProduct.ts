@@ -5,13 +5,15 @@ export const useProducts = {
   getProduct({
     category,
     search,
+    limit,
   }: {
     category?: string | null;
     search?: string;
+    limit?: string;
   }) {
     return useQuery({
       queryKey: ["products", { search }],
-      queryFn: () => productService.getProduct({ category, search }),
+      queryFn: () => productService.getProduct({ category, search, limit }),
     });
   },
   getProductDetail(id: string) {
@@ -27,10 +29,10 @@ export const useProducts = {
       queryFn: () => productService.getRecommendations({ limit }),
     });
   },
-  getNewEyeWear() {
+  getNewEyeWear(limit: number) {
     return useQuery({
       queryKey: ["new-eyewear"],
-      queryFn: productService.getNewEyeWear,
+      queryFn: () => productService.getNewEyeWear({ limit }),
     });
   },
   getProductCategory() {

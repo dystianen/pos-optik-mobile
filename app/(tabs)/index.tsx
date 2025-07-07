@@ -53,7 +53,7 @@ export default function Index() {
     data: newEyeWear,
     refetch: refetchNewEyeWear,
     isLoading: isLoadingNewEyeWear,
-  } = useProducts.getNewEyeWear();
+  } = useProducts.getNewEyeWear(10);
 
   const [refreshing, setRefreshing] = useState(false);
 
